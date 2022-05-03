@@ -35,7 +35,7 @@ module.exports = {
         await interaction.deferReply();
         const sc = interaction.options;
         const title = sc.getString('title');
-        if(title.length>5)return interaction.reply("タイトルは5字以内にしてください");
+        if(sc.getString("list").length>5)return interaction.followUp("タイトルは5字以内にしてください");
         const q = naosu(sc.getString('question')).split(",");
         if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `入力タイプが違います\n詳細:次の形式で入力してください\n例:a,b,c` }] });
         if (q.length > 50) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢は50字以内` }] });
