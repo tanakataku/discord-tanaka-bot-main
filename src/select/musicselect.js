@@ -74,7 +74,7 @@ module.exports = {
     */
     if (interaction.customId == "start_select") {
       await interaction.deferUpdate();
-      let bugi=0;
+      let bugi = 0;
       const json = JSON.parse(interaction.values[0]);
       const data = JSON.parse(JSON.stringify(await db.get(json.id)));
       if (!interaction.member.voice.channel) return interaction.reply({
@@ -102,8 +102,8 @@ module.exports = {
             "placeholder": "正解だと思う選択肢を選択してください",
             "options": data[json.playname][num].q.map(item => {
               return {
-                "label": `${bugi++}:${item.slice(0,10)}`,
-                "value": JSON.stringify({bug:bugi, answer: data[json.playname][num].answer, user_answer: item })
+                "label": `${bugi++}:${item.slice(0, 10)}`,
+                "value": JSON.stringify({ bug: bugi, answer: data[json.playname][num].answer, user_answer: item })
               };
             }),
             "type": 3
@@ -172,10 +172,10 @@ module.exports = {
       const json = JSON.parse(interaction.values[0]);
       const i = this[interaction.guildId];
       if (i) i.reply.delete().catch(() => { });
-      const rank_data = JSON.parse(JSON.stringify(await rank.get(interaction.guildId)||[]));
+      const rank_data = JSON.parse(JSON.stringify(await rank.get(interaction.guildId) || []));
       if (json.answer == json.user_answer) {
-       (rank_data[interaction.user.id])?rank_data[interaction.user.id]++:0;
-       await rank.set(interaction.guildId);
+        (rank_data[interaction.user.id]) ? rank_data[interaction.user.id]++ : 0;
+        await rank.set(interaction.guildId);
         interaction.channel.send({
           embeds: [{
             title: "正解!",
@@ -184,7 +184,7 @@ module.exports = {
           components: [data]
         });
       } else {
-        (rank_data[interaction.user.id])?rank_data[interaction.user.id]--:0;
+        (rank_data[interaction.user.id]) ? rank_data[interaction.user.id]-- : 0;
         await rank.set(interaction.guildId);
         interaction.channel.send({
           embeds: [{
@@ -261,29 +261,39 @@ module.exports = {
         interaction: interaction
       });
     };
-      if(interaction.customId.startsWith("ban")){
-        const id = interaction.customId.slice(3).split(",");
-        await db.delete(id[1]);
-        const bans = JSON.parse(JSON.stringify(await bandb.get("ban")||[]));
-        bans.push(id[0]);
-        await bandb.set("ban",bans);
-        globalThis.ban = bans;
-        interaction.reply("完了しました");
-      };
+    if (interaction.customId.startsWith("ban")) {
+      const id = interaction.customId.slice(3).split(",");
+      await db.delete(id[1]);
+      const bans = JSON.parse(JSON.stringify(await bandb.get("ban") || []));
+      bans.push(id[0]);
+      await bandb.set("ban", bans);
+      globalThis.ban = bans;
+      interaction.reply("完了しました");
+    };
 
-      if(interaction.customId=="delete"){
-        const id = JSON.parse(interaction.values[0]);
-        const data = JSON.parse(JSON.stringify(await db.get(id.id)));
-        delete data[Object.keys(data)[id.num]]
-        if(Object.keys(data).length==0)return await db.delete(id.id)
-        await db.set(id.id,data);
+    if (interaction.customId == "delete") {
+      const id = JSON.parse(interaction.values[0]);
+      const data = JSON.parse(JSON.stringify(await db.get(id.id)));
+      delete data[Object.keys(data)[id.num]]
+      if (Object.keys(data).length == 0) {
+        await db.delete(id.id);
         interaction.reply({
           ephemeral: true,
-          embeds:[{
-            title:"完了",
-            description:"消しました。"
+          embeds: [{
+            title: "完了",
+            description: "プレイリストが0個になったのでIDで消去しました"
+          }]
+        });
+      } else {
+        await db.set(id.id, data);
+        interaction.reply({
+          ephemeral: true,
+          embeds: [{
+            title: "完了",
+            description: "消しました。"
           }]
         });
       };
+    };
   }
 }
