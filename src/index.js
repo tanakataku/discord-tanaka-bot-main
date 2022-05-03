@@ -17,7 +17,7 @@ for (const file of commandFiles) {
 };
 client.on("ready", async () => {
   globalThis.ban = JSON.parse(JSON.stringify(await db.get("ban") || []));
-  client.user.setPresence({ activity: { name: '/helpでhelpが見れるよ' } });
+  client.user.setPresence({ activities: [{ name: '/helpでhelpが見れるよ' }] });
   await client.application.commands.set(data, process.env.slashcommand);
   console.log("完了")
 });
