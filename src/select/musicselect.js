@@ -275,6 +275,7 @@ module.exports = {
         const id = JSON.parse(interaction.values[0]);
         const data = JSON.parse(JSON.stringify(await db.get(id.id)));
         delete data[Object.keys(data)[id.num]]
+        if(Object.keys(data).length==0)return await db.delete(id.id)
         await db.set(id.id,data);
         interaction.reply({
           ephemeral: true,
