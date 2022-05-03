@@ -1,1 +1,1 @@
-tanaka: npm start
+tanaka: node ./src/index.js
