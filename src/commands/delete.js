@@ -14,19 +14,20 @@ module.exports = {
     },
     async run(interaction) {
         const id = interaction.options.getString('playid')?.toLowerCase();
-        const data = JSON.parse(JSON.stringify(await db.get(id)||[]));
-        if(data==[]) return interaction.reply({
+        const datas = await db.get(id)
+        const data = JSON.parse(JSON.stringify(datas || []));
+        if (!datas) return interaction.reply({
             ephemeral: true,
-            embeds:[{
-                title:"エラー",
-                description:"プレイリストIDが見つかりませんでした"
+            embeds: [{
+                title: "エラー",
+                description: "プレイリストIDが見つかりませんでした"
             }]
         });
-        if(data[Object.keys(data)[0]][0].id!==interaction.user.id) return interaction.reply({
+        if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
             ephemeral: true,
-            embeds:[{
-                title:"エラー",
-                description:"ユーザーIDが一致しません"
+            embeds: [{
+                title: "エラー",
+                description: "ユーザーIDが一致しません"
             }]
         });
         let i = 0;
@@ -37,7 +38,7 @@ module.exports = {
                 "options": Object.keys(data).map(item => {
                     return {
                         "label": item,
-                        "value": JSON.stringify({ id:id , num: i++ })
+                        "value": JSON.stringify({ id: id, num: i++ })
                     };
                 }),
                 "type": 3
@@ -46,11 +47,11 @@ module.exports = {
         };
         interaction.reply({
             ephemeral: true,
-            embeds:[{
-                title:"消したいプレイリストを選択してください",
-                description:Object.keys(data).join("\n")
+            embeds: [{
+                title: "消したいプレイリストを選択してください",
+                description: Object.keys(data).join("\n")
             }],
-            components:[select_data]
+            components: [select_data]
         })
     }
 };
