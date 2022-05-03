@@ -39,7 +39,7 @@ module.exports = {
         if(sc.getString("list").length>5)return interaction.followUp("タイトルは5字以内にしてください");
         const q = naosu(sc.getString('question')).split(",");
         if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `入力タイプが違います\n詳細:次の形式で入力してください\n例:a,b,c` }] });
-        if (q.length > 40) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢は40字以内` }] });
+        if (q.length > 30) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢は30字以内` }] });
         if(q[25])return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢が多すぎます25個以内にしてください。` }] });
         q.push(sc.getString('answer'));
         const r = await yts(title);
