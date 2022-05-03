@@ -49,8 +49,8 @@ module.exports = {
                 "placeholder": "対象の曲を選択してください",
                 "options": videos.map(data => {
                     return {
-                        "label": data.title.replace(/\s+/g, "").slice(0, 10),
-                        "value": JSON.stringify({ url: data.videoId, answer: q, playlist: sc.getString("list") })
+                        "label": data.title.replace(/\s+/g, "").slice(0, 5),
+                        "value": JSON.stringify({url:data.videoId,answer:q,playlist:sc.getString("list")})
                     };
                 }),
                 "type": 3
