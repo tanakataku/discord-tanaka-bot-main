@@ -77,7 +77,7 @@ module.exports = {
       let bugi = 0;
       const json = JSON.parse(interaction.values[0]);
       const data = JSON.parse(JSON.stringify(await db.get(json.id)));
-      if (!interaction.member.voice.channel) return interaction.reply({
+      if (!interaction.member.voice.channel) return interaction.followUp({
         ephemeral: true,
         embeds: [{
           title: "エラー",
