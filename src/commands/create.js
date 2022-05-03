@@ -31,6 +31,7 @@ module.exports = {
         }],
     },
     async run(interaction) {
+
         let i = 1;
         await interaction.deferReply();
         const sc = interaction.options;
@@ -43,6 +44,7 @@ module.exports = {
         q.push(sc.getString('answer'));
         const r = await yts(title);
         const videos = r.videos.slice(0, 5);
+        console.log(data.videoId)
         const select_data = {
             "components": [{
                 "custom_id": "music_select",
