@@ -35,10 +35,10 @@ module.exports = {
         await interaction.deferReply();
         const sc = interaction.options;
         const title = sc.getString('title');
-        if(title.length>10)return interaction.reply("タイトルは10字以内にしてください");
+        if(title.length>5)return interaction.reply("タイトルは5字以内にしてください");
         const q = naosu(sc.getString('question')).split(",");
         if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `入力タイプが違います\n詳細:次の形式で入力してください\n例:a,b,c` }] });
-        if (q.length > 60) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢は60字以内` }] });
+        if (q.length > 50) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢は50字以内` }] });
         if(q[25])return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢が多すぎます25個以内にしてください。` }] });
         q.push(sc.getString('answer'));
         const r = await yts(title);
