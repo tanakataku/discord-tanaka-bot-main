@@ -4,7 +4,7 @@ const db = new mongo.Database(process.env.db_label);
 module.exports = {
     data: {
         name: "delete",
-        description: "delete",
+        description: "プレイリストを削除します",
         options: [{
             type: "STRING",
             name: "playid",

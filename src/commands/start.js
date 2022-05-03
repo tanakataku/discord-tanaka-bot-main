@@ -4,7 +4,7 @@ const db = new mongo.Database(process.env.db_label);
 module.exports = {
     data: {
         name: "start",
-        description: "start",
+        description: "音楽クイズを開始します",
         options: [{
             type: "STRING",
             name: "id",

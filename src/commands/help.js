@@ -1,7 +1,7 @@
 module.exports = {
     data: {
         name: "help",
-        description: "help"
+        description: "ヘルプを表示します"
     },
     async run(interaction) {
     interaction.reply({

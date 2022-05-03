@@ -7,7 +7,7 @@ const naosu = str => {
 module.exports = {
     data: {
         name: "create",
-        description: "create",
+        description: "音楽の問題を作成します",
         options: [{
             type: "STRING",
             name: "title",

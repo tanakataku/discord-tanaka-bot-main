@@ -167,32 +167,27 @@ module.exports = {
       const i = this[interaction.guildId];
       if(i)i.reply.delete().catch(() => { });
       const ranks = await rank.get(interaction.guildId);
-      console.log(ranks)
-      const rank_data = JSON.parse(ranks??"[]");
-      console.log(rank_data)
-      if(rank_data[interaction.user.id]==undefined){
-        rank_data[interaction.user.id]=5;
-        console.log(ranks)
-      };
-      
+      let rank_data = JSON.parse(ranks??"{}");
+      const nowrank = rank_data[interaction.user.id];
       if (json.answer == json.user_answer) {
-        rank_data[interaction.user.id]=(rank_data[interaction.user.id])?rank_data[interaction.user.id]+1:0
-        console.log(JSON.stringify(rank_data))
+        const rankdata= nowrank+1||0
+        rank_data[interaction.user.id]=rankdata;
         await rank.set(interaction.guildId,JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
             title: "正解!",
-            description: `${interaction.user.tag}さんが正解しました。\n現在のポイント:${rank_data[interaction.user.id]||1}\n操作を続行するためにボタンを押してください。`
+            description: `${interaction.user.tag}さんが正解しました。\n現在のポイント:${rankdata+1}P\n操作を続行するためにボタンを押してください。`
           }],
           components: [data]
         });
       } else {
-        rank_data[interaction.user.id]=(rank_data[interaction.user.id])?rank_data[interaction.user.id]-- : 0;
-        await rank.set(interaction.guildId,rank_data[interaction.user.id]);
+        const rankdata= nowrank-1||0
+        rank_data[interaction.user.id]=rankdata;
+        await rank.set(interaction.guildId,JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
             title: "不正解!",
-            description: `${interaction.user.tag}さんが不正解しました。\n操作を続行するためにボタンを押してください。`
+            description: `${interaction.user.tag}さんが不正解しました。\n現在のポイント:${rankdata-1}P\n操作を続行するためにボタンを押してください。`
           }],
           components: [data]
         });
