@@ -34,6 +34,7 @@ module.exports = {
         const q = naosu(sc.getString('question')).split(",");
         if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `入力タイプが違います\n詳細:次の形式で入力してください\n例:a,b,c` }] });
         if (q.length > 80) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢は60字以内` }] });
+        if(q[25])return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢が多すぎます25個以内にしてください。` }] });
         q.push(sc.getString('title'));
         const r = await yts(title);
         const videos = r.videos.slice(0, 5);
@@ -55,7 +56,7 @@ module.exports = {
             ephemeral: true,
             embeds: [{
                 title: `${title}の検索結果`,
-                description: videos.map(data => `${i++}個目\nタイトル:${data.title.slice(0, 30)}\n再生時間:${data.timestamp}`).join("\n\n")
+                description: videos.map(data => `${i++}個目\nタイトル:(${data.title.slice(0, 30)})[${data.url}]\n再生時間:${data.timestamp}`).join("\n\n")
             }],
             components: [select_data]
         });
