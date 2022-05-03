@@ -34,7 +34,7 @@ module.exports = {
         const select_data = {
             "components": [{
                 "custom_id": "delete",
-                "placeholder": "**対象のプレイリスト**を選択してください。",
+                "placeholder": "対象のプレイリストを選択してください。",
                 "options": Object.keys(data).map(item => {
                     return {
                         "label": item,

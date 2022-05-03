@@ -111,7 +111,7 @@ module.exports = {
         const select_data = {
           "components": [{
             "custom_id": "answer_select",
-            "placeholder": "**正解だと思う**選択肢を選択してください。",
+            "placeholder": "正解だと思う選択肢を選択してください。",
             "options": data[json.playname][num].q.map(item => {
               return {
                 "label": `${bugi++}:${item.slice(0, 10)}`,
@@ -126,7 +126,7 @@ module.exports = {
           components: [
             {
               custom_id: `re${data[json.playname][num].url},${data[json.playname][num].id},${json.id}`,
-              label: "**不適切なプレイリスト**を報告する。",
+              label: "不適切なプレイリストを報告する。",
               style: 4,
               type: 2,
             }
