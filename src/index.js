@@ -17,8 +17,8 @@ for (const file of commandFiles) {
 };
 client.on("ready", async () => {
   globalThis.ban = JSON.parse(JSON.stringify(await db.get("ban") || []));
-  client.user.setPresence({ activities: [{ name: '/helpでhelpが見れるよ' }] });
-  await client.application.commands.set(data, process.env.slashcommand);
+  client.user.setPresence({ activities: [{ name: '/helpでhelpが見れるよ!' }] });
+  await client.application.commands.set(data, "970988979782553601");
   console.log("完了")
 });
 client.on("interactionCreate", interaction => {

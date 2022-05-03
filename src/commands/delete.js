@@ -4,11 +4,11 @@ const db = new mongo.Database(process.env.db_label);
 module.exports = {
     data: {
         name: "delete",
-        description: "プレイリストを削除します",
+        description: "プレイリストを削除します。",
         options: [{
             type: "STRING",
             name: "playid",
-            description: "プレイリストのIDを入力してください",
+            description: "プレイリストのIDを入力してください。",
             required: true
         }]
     },
@@ -20,21 +20,21 @@ module.exports = {
             ephemeral: true,
             embeds: [{
                 title: "エラー",
-                description: "プレイリストIDが見つかりませんでした"
+                description: "プレイリストIDが見つかりませんでした。"
             }]
         });
         if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
             ephemeral: true,
             embeds: [{
                 title: "エラー",
-                description: "ユーザーIDが一致しません"
+                description: "ユーザーIDが一致しません。"
             }]
         });
         let i = 0;
         const select_data = {
             "components": [{
                 "custom_id": "delete",
-                "placeholder": "対象のプレイリストを選択してください",
+                "placeholder": "**対象のプレイリスト**を選択してください。",
                 "options": Object.keys(data).map(item => {
                     return {
                         "label": item,
@@ -48,7 +48,7 @@ module.exports = {
         interaction.reply({
             ephemeral: true,
             embeds: [{
-                title: "消したいプレイリストを選択してください",
+                title: "**消したいプレイリスト**を選択してください。",
                 description: Object.keys(data).join("\n")
             }],
             components: [select_data]
