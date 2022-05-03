@@ -43,8 +43,7 @@ module.exports = {
         if(q[25])return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢が多すぎます25個以内にしてください。` }] });
         q.push(sc.getString('answer'));
         const r = await yts(title);
-        const videos = r.videos.slice(0, 5);
-        console.log(data.videoId)
+        const videos = r.videos.slice(0, 3);
         const select_data = {
             "components": [{
                 "custom_id": "music_select",
