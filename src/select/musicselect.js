@@ -28,14 +28,14 @@ module.exports = {
     if (interaction.customId == "music_select") {
       const id = Number(moment(interaction.user.createdAt).format("MMDDHHmmss").slice(0, 9)).toString(16);
       const json = JSON.parse(interaction.values[0]);
-      const q = shuffle(json.answer);
+      const q = shuffle(json.a);
       const db_data = await db.get(id);
       const data = JSON.parse(JSON.stringify(db_data || {}));
-      if (data[json.playlist]) {
-        data[json.playlist].push({ url: json.url, answer: json.answer[json.answer.length - 1], q: q });
+      if (data[json.p]) {
+        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q });
         this.playdata = data;
       } else {
-        data[json.playlist] = [{ url: json.url, answer: json.answer[json.answer.length - 1], q: q, id: interaction.user.id }];
+        data[json.p] = [{ url: json.u, answer: json.a[json.a.length - 1], q: q, id: interaction.user.id }];
         this.playdata = data;
       };
       if (Object.keys(data).length == 6) {
@@ -47,7 +47,7 @@ module.exports = {
           }]
         });
       };
-      if (this.playdata[json.playlist].length == 11) {
+      if (this.playdata[json.p].length == 11) {
         return interaction.reply({
           ephemeral: true,
           embeds: [{
@@ -61,7 +61,7 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           title: "完了しました",
-          description: `登録ID:${id}\n答え:${json.answer[json.answer.length - 1]}\n選択肢:${q}\nプレイリスト名:${json.playlist}\n登録曲数:${this.playdata[json.playlist].length}\n登録プレイリスト数:${Object.keys(data).length}`
+          description: `登録ID:${id}\n答え:${json.a[json.a.length - 1]}\n選択肢:${q}\nプレイリスト名:${json.p}\n登録曲数:${this.playdata[json.p].length}\n登録プレイリスト数:${Object.keys(data).length}`
         }]
       });
     };

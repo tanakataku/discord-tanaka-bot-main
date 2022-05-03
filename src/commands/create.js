@@ -51,7 +51,7 @@ module.exports = {
                 "options": videos.map(data => {
                     return {
                         "label": data.title.replace(/\s+/g, "").slice(0, 5),
-                        "value": JSON.stringify({url:data.videoId,answer:q,playlist:sc.getString("list")})
+                        "value": JSON.stringify({u:data.videoId,a:q,p:sc.getString("list")})
                     };
                 }),
                 "type": 3
