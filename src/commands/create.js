@@ -55,7 +55,7 @@ module.exports = {
             ephemeral: true,
             embeds: [{
                 title: `${title}の検索結果`,
-                description: videos.map(data => `${i++}個目\nタイトル:${data.title.slice(0, 10)}\n再生時間:${data.timestamp}`).join("\n\n")
+                description: videos.map(data => `${i++}個目\nタイトル:${data.title.slice(0, 30)}\n再生時間:${data.timestamp}`).join("\n\n")
             }],
             components: [select_data]
         });
