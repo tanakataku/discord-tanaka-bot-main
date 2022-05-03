@@ -8,9 +8,9 @@ const player = new Player(globalThis.client, {
 discordModals(globalThis.client);
 globalThis.player = player;
 mongo.connect(process.env.db);
+const rank = new mongo.Database(process.env.rank_db_label);
 const db = new mongo.Database(process.env.db_label);
 const bandb = new mongo.Database(process.env.ban_db_label);
-const rank = new mongo.Database(process.env.rank_db_label);
 const shuffle = ([...array]) => {
   for (let i = array.length - 1; i >= 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -139,12 +139,6 @@ module.exports = {
     player.on('queueEnd', () => {
       const i = this[interaction.guildId];
       if (i) i.reply.delete().catch(() => { });
-      interaction.followUp({
-        embeds: [{
-          title: "タイムアウト",
-          description: "操作がされていなかったため終了しました。"
-        }]
-      }).catch(() => { });
     });
     /*
   
@@ -171,21 +165,30 @@ module.exports = {
       };
       const json = JSON.parse(interaction.values[0]);
       const i = this[interaction.guildId];
-      if (i) i.reply.delete().catch(() => { });
-      const rank_data = JSON.parse(JSON.stringify(await rank.get(interaction.guildId) || []));
+      if(i)i.reply.delete().catch(() => { });
+      const ranks = await rank.get(interaction.guildId);
+      console.log(ranks)
+      const rank_data = JSON.parse(ranks??"[]");
+      console.log(rank_data)
+      if(rank_data[interaction.user.id]==undefined){
+        rank_data[interaction.user.id]=5;
+        console.log(ranks)
+      };
+      
       if (json.answer == json.user_answer) {
-        (rank_data[interaction.user.id]) ? rank_data[interaction.user.id]++ : 0;
-        await rank.set(interaction.guildId);
+        rank_data[interaction.user.id]=(rank_data[interaction.user.id])?rank_data[interaction.user.id]+1:0
+        console.log(JSON.stringify(rank_data))
+        await rank.set(interaction.guildId,JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
             title: "正解!",
-            description: `${interaction.user.tag}さんが正解しました。\n操作を続行するためにボタンを押してください。`
+            description: `${interaction.user.tag}さんが正解しました。\n現在のポイント:${rank_data[interaction.user.id]||1}\n操作を続行するためにボタンを押してください。`
           }],
           components: [data]
         });
       } else {
-        (rank_data[interaction.user.id]) ? rank_data[interaction.user.id]-- : 0;
-        await rank.set(interaction.guildId);
+        rank_data[interaction.user.id]=(rank_data[interaction.user.id])?rank_data[interaction.user.id]-- : 0;
+        await rank.set(interaction.guildId,rank_data[interaction.user.id]);
         interaction.channel.send({
           embeds: [{
             title: "不正解!",
@@ -219,7 +222,7 @@ module.exports = {
       });
       await this.sound(i.num + 1);
       player.getQueue(interaction.guildId).skip();
-      await interaction.deferUpdate();
+      await interaction.deferUpdate().catch(()=>{});
     }
 
 
@@ -240,7 +243,7 @@ module.exports = {
       const guild = player.getQueue(interaction.guildId);
       guild.stop();
       guild.clearQueue();
-      await interaction.deferUpdate();
+      await interaction.deferUpdate().catch(()=>{});
     }
 
     if (interaction.customId.startsWith("re")) {

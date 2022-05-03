@@ -1,5 +1,6 @@
 const { Client, Intents } = require('discord.js');
 const fs = require("node:fs");
+require('dotenv').config();
 const mongo = require("aurora-mongo");
 mongo.connect(process.env.db);
 const db = new mongo.Database(process.env.ban_db_label);
