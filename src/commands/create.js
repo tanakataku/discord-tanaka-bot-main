@@ -51,7 +51,7 @@ module.exports = {
         q.push(sc.getString('answer'));
         const r = await yts(title);
         const videos = r.videos.slice(0, 10);
-        if(videos==[]) return interaction.followUp({
+        if(!videos[0]) return interaction.followUp({
             ephemeral: true,
             embeds: [{
                 title: `エラー`,
