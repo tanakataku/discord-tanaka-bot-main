@@ -84,7 +84,7 @@ module.exports = {
     */
     if (interaction.customId == "start_select") {
       await interaction.deferUpdate();
-      let bugi = 0;
+      let bugi = 1;
       const json = JSON.parse(interaction.values[0]);
       const data = JSON.parse(JSON.stringify(await globalThis.dbs.get(json.id)));
       if (!interaction.member.voice.channel) return interaction.followUp({
@@ -95,17 +95,32 @@ module.exports = {
           description: `ボイスチャンネルに参加してください。`
         }]
       });
+      if (!interaction.guild.me.permissionsIn(interaction.member.voice.channel).has("1048576")) return interaction.followUp({
+        ephemeral: true,
+        embeds: [{
+          color: 0xff1100,
+          title: "エラー",
+          description: '私にボイスチャンネル接続権限がないです。'
+        }]
+      });
+      if (!interaction.guild.me.permissionsIn(interaction.member.voice.channel).has('2097152')) return interaction.followUp({
+        ephemeral: true,
+        embeds: [{
+          color: 0xff1100,
+          title: "エラー",
+          description: '私にボイスチャンネル発言権限がないです。'
+        }]
+      });
       let queue = player.createQueue(interaction.guildId);
       const check = await queue.join(interaction.member.voice.channel)
         .catch(e => interaction.followUp({
           ephemeral: true,
           embeds: [{
             color: 0xff1100,
-            title: "エラー",
-            description: `${String(e)}\nもう一度やり直してください。`
+            title: "原因不明なエラー",
+            description: `${String(e)}\nもう一度やり直してください。\n解決しない場合はBURI#9515まで。`
           }]
         }));
-      console.log(check.embeds)
       if (check.embeds) return;
       this.sound = async num => {
         if (!data[json.playname][num]) return interaction.followUp({
@@ -134,6 +149,7 @@ module.exports = {
           }],
           "type": 1
         };
+        bugi = 1;
         const button = {
           components: [
             {
@@ -148,6 +164,7 @@ module.exports = {
         this[interaction.guildId] = {
           reply: await interaction.channel.send({
             embeds: [{
+              color: 0x00ff22,
               title: "この音楽の名称を選択してください。",
               description: data[json.playname][num].q.join("\n")
             }],
@@ -157,7 +174,6 @@ module.exports = {
         };
       };
       await this.sound(0);
-
     };
 
     player.on('queueEnd', () => {
