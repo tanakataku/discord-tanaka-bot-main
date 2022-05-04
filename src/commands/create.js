@@ -45,7 +45,6 @@ module.exports = {
                 }]
             })
         });
-        console.log(check)
         if(check[0]!==undefined)return;
         if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `入力タイプが違います。\n詳細:次の形式で入力してください。\n例:**a,b,c**` }] });
         if (q[25]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢が多すぎます、**25個以内**にしてください。` }] });
