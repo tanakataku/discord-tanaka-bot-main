@@ -32,7 +32,7 @@ module.exports = {
                     description: "プレイリストIDが見つかりませんでした。"
                 }]
             });
-            if (parseInt(data[Object.keys(data)[0]][0].id, 36) !== interaction.user.id) return interaction.reply({
+            if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color:0xff1100,
@@ -85,7 +85,7 @@ module.exports = {
                     description: "ユーザーIDが見つかりませんでした。"
                 }]
             });
-            if (parseInt(data[Object.keys(data)[0]][0].id, 36)  !== interaction.user.id) return interaction.reply({
+            if (data[Object.keys(data)[0]][0].id  !== interaction.user.id) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color:0xff1100,

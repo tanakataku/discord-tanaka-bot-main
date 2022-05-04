@@ -63,7 +63,7 @@ module.exports = {
                 embeds: [{
                     color:0x00ff22,
                     title: "ポイント順位",
-                    description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(parseInt(d.slice(1), 36))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
+                    description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
                 }]
             });
         }

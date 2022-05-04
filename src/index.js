@@ -2,7 +2,7 @@ const { Client, Intents } = require('discord.js');
 const fs = require("node:fs");
 require('dotenv').config();
 const mongo = require("aurora-mongo");
-mongo.connect(process.env.globalThis.dbs);
+mongo.connect(process.env.db);
 
 globalThis.dbs  = new mongo.Database(process.env.db_label);
 globalThis.ranks = new mongo.Database(process.env.rank_db_label);
@@ -45,7 +45,7 @@ client.on('modalSubmit', async modal => {
       title: "ご協力感謝します。"
     }]
   });
-  const userid = parseInt(data[1], 36)
+  const userid = data[1]
   const data = modal.customId.split(",");
   const button = {
     components: [

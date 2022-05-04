@@ -39,10 +39,10 @@ module.exports = {
       const db_data = await globalThis.dbs.get(id);
       const data = JSON.parse(JSON.stringify(db_data || {}));
       if (data[json.p]) {
-        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q, id: Number(interaction.user.id).toString(36) });
+        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q, id: interaction.user.id });
         this.playdata = data;
       } else {
-        data[json.p] = [{ url: json.u, answer: json.a[json.a.length - 1], q: q, id: Number(interaction.user.id).toString(36) }];
+        data[json.p] = [{ url: json.u, answer: json.a[json.a.length - 1], q: q, id: interaction.user.id }];
         this.playdata = data;
       };
       if (Object.keys(data).length == 6) {
@@ -182,10 +182,10 @@ module.exports = {
       if (i) i.reply.delete().catch(() => { });
       const ranks = await globalThis.ranks.get(interaction.guildId);
       let rank_data = JSON.parse(ranks ?? "{}");
-      const nowrank = rank_data[Number(interaction.user.id).toString(36)];
+      const nowrank = rank_data[interaction.user.id];
       if (json.answer == json.user_answer) {
         const rankdata = nowrank + 1 || 0
-        rank_data[Number(interaction.user.id).toString(36)] = rankdata;
+        rank_data[interaction.user.id] = rankdata;
         await globalThis.ranks.set(interaction.guildId, JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
@@ -197,7 +197,7 @@ module.exports = {
         });
       } else {
         const rankdata = nowrank - 1 || 0
-        rank_data[Number(interaction.user.id).toString(36)] = rankdata;
+        rank_data[interaction.user.id] = rankdata;
         await globalThis.ranks.set(interaction.guildId, JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
