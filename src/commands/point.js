@@ -44,6 +44,7 @@ module.exports = {
         if (interaction.options.getString('point_type') === 'pointcheck') {
             const datas = JSON.parse(await rank.get(interaction.guildId));
             if (!datas) return interaction.reply({
+                ephemeral: true,
                 embeds: [{
                     title: "エラー",
                     description: "サーバーにポイント情報がありません.。"
