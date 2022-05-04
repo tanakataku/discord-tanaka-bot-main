@@ -40,6 +40,7 @@ module.exports = {
             if(x.length>=85)return interaction.followUp({
                 ephemeral: true,
                 embeds:[{
+                    color:0xff1100,
                     title:"エラー",
                     description:`${x}\nは85字を超えています。`
                 }]
@@ -54,6 +55,7 @@ module.exports = {
         if(!videos[0]) return interaction.followUp({
             ephemeral: true,
             embeds: [{
+                color:0xff1100,
                 title: `エラー`,
                 description: "動画が見つかりませんでした。"
             }]
@@ -84,6 +86,7 @@ module.exports = {
         interaction.followUp({
             ephemeral: true,
             embeds: [{
+                color:0x00ff22,
                 title: `**${title.slice(0,15)}**の検索結果`,
                 description: videos.map(data => `**${i++}**個目\n**タイトル**:[${data.title.slice(0, 30).replace(/\]/g,"").replace(/\[/g,"")}](${data.url})\n**再生時間**:${data.timestamp}秒`).join("\n\n")
             }],

@@ -22,7 +22,7 @@ client.on("ready", async () => {
   console.log(`完了!`)
 });
 client.on("interactionCreate", interaction => {
-  if(!interaction.guildId)return interaction.reply("helpは/helpと**サーバーで**打ってください");
+  if (!interaction.guildId) return interaction.reply("helpは/helpと**サーバーで**打ってください");
   if (globalThis.ban.includes(interaction.user.id)) return;
   if (interaction.isCommand()) {
     try {
@@ -33,18 +33,20 @@ client.on("interactionCreate", interaction => {
   };
   if (interaction.isSelectMenu() || interaction.isButton()) musicselect.run(interaction);
 });
-client.on('modalSubmit',async modal => {
+client.on('modalSubmit', async modal => {
   if (globalThis.ban.includes(modal.user.id)) return;
   await modal.reply({
-    embeds:[{
-      title:"ご協力感謝します。"
+    embeds: [{
+      color: 0x00ff22,
+      title: "ご協力感謝します。"
     }]
   });
+  const userid = parseInt(data[1], 36)
   const data = modal.customId.split(",");
   const button = {
     components: [
       {
-        custom_id: `ban${data[1]},${data[2]}`,
+        custom_id: `ban${userid},${data[2]}`,
         label: "クイックBAN",
         style: 4,
         type: 2,
@@ -54,8 +56,9 @@ client.on('modalSubmit',async modal => {
   };
   client.channels.cache.get(process.env.report_channel).send({
     embeds: [{
+      color: 0xff1100,
       title: "報告",
-      description: `対象動画:"https://youtube.com/watch?v=${data[0]}"\n対象ユーザー:${data[1]}\n報告ユーザー:${modal.user.id}(${modal.user.tag})\nプレイリストID:${data[2]}\n報告内容:${modal.getTextInputValue('input')}`
+      description: `対象動画:"https://youtube.com/watch?v=${data[0]}"\n対象ユーザー:${userid}\n報告ユーザー:${modal.user.id}(${modal.user.tag})\nプレイリストID:${data[2]}\n報告内容:${modal.getTextInputValue('input')}`
     }],
     components: [button]
   });

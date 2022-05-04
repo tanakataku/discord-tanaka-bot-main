@@ -21,6 +21,7 @@ module.exports = {
             if (!interaction.memberPermissions.has('ADMINISTRATOR')) return interaction.reply({
                 ephemeral: true,
                 embeds:[{
+                    color:0xff1100,
                     title:"エラー",
                     description:'あなたには管理者権限がありません。'
                 }]
@@ -28,6 +29,7 @@ module.exports = {
             if (!await rank.has(interaction.guildId)) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
+                    color:0xff1100,
                     title: "エラー",
                     description: "データが元々ありません。"
                 }]
@@ -36,6 +38,7 @@ module.exports = {
             interaction.reply({
                 ephemeral: true,
                 embeds: [{
+                    color:0x00ff22,
                     title: "成功",
                     description: "データの削除に成功しました。"
                 }]
@@ -46,8 +49,9 @@ module.exports = {
             if (!datas) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
+                    color:0xff1100,
                     title: "エラー",
-                    description: "サーバーにポイント情報がありません.。"
+                    description: "サーバーにポイント情報がありません。"
                 }]
             });
             let i = 0;
@@ -60,6 +64,7 @@ module.exports = {
             let j = 1;
             interaction.reply({
                 embeds: [{
+                    color:0x00ff22,
                     title: "ポイント順位",
                     description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
                 }]
