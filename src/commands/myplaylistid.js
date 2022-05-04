@@ -1,4 +1,5 @@
 const mongo = require("aurora-mongo");
+const moment = require('moment');
 mongo.connect(process.env.db);
 const db = new mongo.Database(process.env.db_label);
 module.exports = {
@@ -14,10 +15,11 @@ module.exports = {
                 description:`アカウントデータが見つかりませんでした`
             }]
         });
+        const data = JSON.parse(JSON.stringify(await db.get(id)));
     interaction.reply({
         embeds:[{
             title:"取得成功",
-            description:`${id}\n仕組みはアカウント作成日(時分秒)を36進数に直したものです。`
+            description:`**${id}**\n**プレイリスト名**\n${Object.keys(data).join("\n")}\n\n仕組みはアカウント作成日(時分秒)を36進数に直したものです。`
         }]
     });
     }
