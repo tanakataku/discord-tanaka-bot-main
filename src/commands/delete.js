@@ -1,4 +1,3 @@
-
 module.exports = {
     data: {
         name: "delete",
@@ -27,7 +26,7 @@ module.exports = {
             if (!datas) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "プレイリストIDが見つかりませんでした。"
                 }]
@@ -35,7 +34,7 @@ module.exports = {
             if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "ユーザーIDが一致しません。"
                 }]
@@ -58,7 +57,7 @@ module.exports = {
             interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0x00ff22,
+                    color: 0x00ff22,
                     title: "**消したいプレイリスト**を選択してください。",
                     description: Object.keys(data).join("\n")
                 }],
@@ -72,23 +71,23 @@ module.exports = {
             if (!datas) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "プレイリストIDが見つかりませんでした。"
                 }]
             });
-            if(!data[Object.keys(data)[0]][0])return interaction.reply({
+            if (!data[Object.keys(data)[0]][0]) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "ユーザーIDが見つかりませんでした。"
                 }]
             });
-            if (data[Object.keys(data)[0]][0].id  !== interaction.user.id) return interaction.reply({
+            if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "ユーザーIDが一致しません。"
                 }]
@@ -101,7 +100,7 @@ module.exports = {
                     "options": Object.keys(data).map(item => {
                         return {
                             "label": item,
-                            "value": JSON.stringify({ id: id, num: i++,title:item })
+                            "value": JSON.stringify({ id: id, num: i++, title: item })
                         };
                     }),
                     "type": 3
@@ -111,7 +110,7 @@ module.exports = {
             interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0x00ff22,
+                    color: 0x00ff22,
                     title: "**消したいプレイリスト**を選択してください。",
                     description: Object.keys(data).join("\n")
                 }],

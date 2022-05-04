@@ -4,7 +4,7 @@ require('dotenv').config();
 const mongo = require("aurora-mongo");
 mongo.connect(process.env.db);
 
-globalThis.dbs  = new mongo.Database(process.env.db_label);
+globalThis.dbs = new mongo.Database(process.env.db_label);
 globalThis.ranks = new mongo.Database(process.env.rank_db_label);
 globalThis.bans = new mongo.Database(process.env.ban_db_label);
 

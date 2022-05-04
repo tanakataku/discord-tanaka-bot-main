@@ -1,4 +1,4 @@
-const moment = require('moment');
+globalThis.moment = require('moment');
 const { Player } = require("discord-music-player");
 const discordModals = require('discord-modals');
 const player = new Player(globalThis.client, {
@@ -20,7 +20,7 @@ module.exports = {
 
     */
     if (interaction.customId == "music_select") {
-      const id = Number(moment(interaction.user.createdAt).format("MMDDHHmmss").slice(0, 9)).toString(36);
+      const id = Number(globalThis.moment(interaction.user.createdAt).format("MMDDHHmmss").slice(0, 9)).toString(36);
       const json = globalThis[interaction.values[0]];
       if (!json) return interaction.reply({
         ephemeral: true,
@@ -96,7 +96,17 @@ module.exports = {
         }]
       });
       let queue = player.createQueue(interaction.guildId);
-      await queue.join(interaction.member.voice.channel);
+      const check = await queue.join(interaction.member.voice.channel)
+        .catch(e => interaction.followUp({
+          ephemeral: true,
+          embeds: [{
+            color: 0xff1100,
+            title: "エラー",
+            description: `${String(e)}\nもう一度やり直してください。`
+          }]
+        }));
+      console.log(check.embeds)
+      if (check.embeds) return;
       this.sound = async num => {
         if (!data[json.playname][num]) return interaction.followUp({
           embeds: [{
@@ -317,13 +327,13 @@ module.exports = {
       const id = JSON.parse(interaction.values[0]);
       const datas = JSON.parse(JSON.stringify(await globalThis.dbs.get(id.id)));
       const name = Object.keys(datas)[id.num];
-      const data = datas[name]
+      const data = datas[name];
       if (data.length == 1) {
         interaction.reply({
           ephemeral: true,
           embeds: [{
-            color: 0x00ff22,
-            title: "完了",
+            color: 0xff1100,
+            title: "警告",
             description: "プレイリスト内の音楽が0個になるので**/delete プレイリスト削除**コマンドを使用ください。"
           }]
         });
@@ -360,7 +370,7 @@ module.exports = {
       delete datas[id.title][id.num]
       const fotdata = datas[id.title].filter(x => x);
       datas[id.title] = fotdata
-      await globalThis.dbs.set(id.id, datas)
+      await globalThis.dbs.set(id.id, datas);
       interaction.reply({
         ephemeral: true,
         embeds: [{

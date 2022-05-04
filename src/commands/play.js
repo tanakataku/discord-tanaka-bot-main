@@ -1,4 +1,3 @@
-
 module.exports = {
     data: {
         name: "play",
@@ -16,10 +15,10 @@ module.exports = {
         const data = await globalThis.dbs.get(use_data);
         if (!data) return interaction.reply({
             ephemeral: true,
-            embeds:[{
-                color:0xff1100,
-                title:"エラー",
-                description:"問題が一つも登録されていない。\nもしくはDBの故障です。"
+            embeds: [{
+                color: 0xff1100,
+                title: "エラー",
+                description: "問題が一つも登録されていない。\nもしくはDBの故障です。"
             }]
         });
         const select_data = {
@@ -39,7 +38,7 @@ module.exports = {
         const json = JSON.parse(JSON.stringify(data));
         interaction.reply({
             embeds: [{
-                color:0x00ff22,
+                color: 0x00ff22,
                 title: `**${use_data}**の検索結果`,
                 description: `**プレイリストタイトル**\n${Object.keys(json).map(datas => `${datas},曲数:${json[datas].length}`).join("\n")}`
             }],

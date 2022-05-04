@@ -17,16 +17,16 @@ module.exports = {
         if (interaction.options.getString('point_type') === 'pointdelete') {
             if (!interaction.memberPermissions.has('ADMINISTRATOR')) return interaction.reply({
                 ephemeral: true,
-                embeds:[{
-                    color:0xff1100,
-                    title:"エラー",
-                    description:'あなたには管理者権限がありません。'
+                embeds: [{
+                    color: 0xff1100,
+                    title: "エラー",
+                    description: 'あなたには管理者権限がありません。'
                 }]
             });
             if (!await globalThis.ranks.has(interaction.guildId)) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "データが元々ありません。"
                 }]
@@ -35,7 +35,7 @@ module.exports = {
             interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0x00ff22,
+                    color: 0x00ff22,
                     title: "成功",
                     description: "データの削除に成功しました。"
                 }]
@@ -46,13 +46,13 @@ module.exports = {
             if (!datas) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
-                    color:0xff1100,
+                    color: 0xff1100,
                     title: "エラー",
                     description: "サーバーにポイント情報がありません。"
                 }]
             });
             let i = 0;
-            const tmp = Object.values(datas).map(data =>String(data) + Object.keys(datas)[i++]);
+            const tmp = Object.values(datas).map(data => String(data) + Object.keys(datas)[i++]);
             tmp.sort(
                 (a, b) => {
                     return b - a;
@@ -61,9 +61,9 @@ module.exports = {
             let j = 1;
             interaction.reply({
                 embeds: [{
-                    color:0x00ff22,
+                    color: 0x00ff22,
                     title: "ポイント順位",
-                    description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
+                    description: tmp.map(d => `${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0, 1)) + 1}ポイント)`).join("\n").slice(0, 2000)
                 }]
             });
         }
