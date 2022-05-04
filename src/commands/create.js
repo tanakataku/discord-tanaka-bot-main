@@ -84,7 +84,7 @@ module.exports = {
         interaction.followUp({
             ephemeral: true,
             embeds: [{
-                title: `**${title}**の検索結果`,
+                title: `**${title.slice(0,15)}**の検索結果`,
                 description: videos.map(data => `**${i++}**個目\n**タイトル**:[${data.title.slice(0, 30).replace(/\]/g,"").replace(/\[/g,"")}](${data.url})\n**再生時間**:${data.timestamp}秒`).join("\n\n")
             }],
             components: [select_data]
