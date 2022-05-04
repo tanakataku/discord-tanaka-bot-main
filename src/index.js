@@ -19,7 +19,7 @@ client.on("ready", async () => {
   globalThis.ban = JSON.parse(JSON.stringify(await db.get("ban") || []));
   client.user.setPresence({ activities: [{ name: '/helpでhelpが見れるよ!' }] });
   await client.application.commands.set(data, "");
-  console.log("完了!")
+  console.log(`完了!${client.user.id}`)
 });
 client.on("interactionCreate", interaction => {
   if(!interaction.guildId)return interaction.reply("helpは/helpと**サーバーで**打ってください");
