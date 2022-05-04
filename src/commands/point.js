@@ -60,7 +60,7 @@ module.exports = {
             let j = 1;
             interaction.reply({
                 embeds: [{
-                    title: "help",
+                    title: "ポイント順位",
                     description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
                 }]
             });
