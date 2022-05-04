@@ -3,8 +3,8 @@ mongo.connect(process.env.db);
 const db = new mongo.Database(process.env.db_label);
 module.exports = {
     data: {
-        name: "delete_playlist",
-        description: "プレイリストを削除します。",
+        name: "delete_music",
+        description: "プレイリスト内の音楽を削除します。",
         options: [{
             type: "STRING",
             name: "playid",
@@ -23,6 +23,13 @@ module.exports = {
                 description: "プレイリストIDが見つかりませんでした。"
             }]
         });
+        if(!data[Object.keys(data)[0]][0])return interaction.reply({
+            ephemeral: true,
+            embeds: [{
+                title: "エラー",
+                description: "ユーザーIDが見つかりませんでした。"
+            }]
+        });
         if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
             ephemeral: true,
             embeds: [{
@@ -33,12 +40,12 @@ module.exports = {
         let i = 0;
         const select_data = {
             "components": [{
-                "custom_id": "delete",
+                "custom_id": "musicdelete",
                 "placeholder": "対象のプレイリストを選択してください。",
                 "options": Object.keys(data).map(item => {
                     return {
                         "label": item,
-                        "value": JSON.stringify({ id: id, num: i++ })
+                        "value": JSON.stringify({ id: id, num: i++,title:item })
                     };
                 }),
                 "type": 3

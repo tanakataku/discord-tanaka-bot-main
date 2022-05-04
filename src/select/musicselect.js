@@ -44,7 +44,7 @@ module.exports = {
       const db_data = await db.get(id);
       const data = JSON.parse(JSON.stringify(db_data || {}));
       if (data[json.p]) {
-        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q });
+        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q,id: interaction.user.id });
         this.playdata = data;
       } else {
         data[json.p] = [{ url: json.u, answer: json.a[json.a.length - 1], q: q, id: interaction.user.id }];
@@ -304,6 +304,60 @@ module.exports = {
           }]
         });
       };
+    };
+    if (interaction.customId == "musicdelete") {
+      const id = JSON.parse(interaction.values[0]);
+      const datas = JSON.parse(JSON.stringify(await db.get(id.id)));
+      const name = Object.keys(datas)[id.num];
+      const data = datas[name]
+      if (data.length == 1) {
+        interaction.reply({
+          ephemeral: true,
+          embeds: [{
+            title: "完了",
+            description: "プレイリスト内の音楽が0個になるので**/delete_playlist**コマンドを使用ください。"
+          }]
+        });
+      }else{
+        let i = 0;
+        const select_data = {
+          "components": [{
+              "custom_id": "music_delete",
+              "placeholder": "対象の音楽を選んでください。",
+              "options": data.map(item => {
+                  return {
+                      "label": `${i}:${item.answer}`,
+                      "value": JSON.stringify({id:id.id,num:i++,title:name})
+                  };
+              }),
+              "type": 3
+          }],
+          "type": 1
+      };
+        interaction.reply({
+          ephemeral: true,
+          embeds: [{
+            title: "消したい音楽を選択してください。",
+            description: data.map(x=>x.answer).join("\n")
+          }],
+          components:[select_data]
+        });
+      }
+    };
+    if (interaction.customId == "music_delete") {
+      const id = JSON.parse(interaction.values[0]);
+      const datas = JSON.parse(JSON.stringify(await db.get(id.id)));
+     delete datas[id.title][id.num]
+     const fotdata = datas[id.title].filter(x=>x);
+     datas[id.title]=fotdata
+        await db.set(id.id,datas)
+        interaction.reply({
+          ephemeral: true,
+          embeds: [{
+            title: "削除が完了しました。",
+            description: `${id.title}を削除しました。`
+          }]
+        });
     };
   }
 }
