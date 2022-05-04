@@ -51,14 +51,13 @@ module.exports = {
         q.push(sc.getString('answer'));
         const r = await yts(title);
         const videos = r.videos.slice(0, 10);
-        if(!videos==[]) return interaction.followUp({
+        if(videos==[]) return interaction.followUp({
             ephemeral: true,
             embeds: [{
                 title: `エラー`,
                 description: "動画が見つかりませんでした。"
             }]
         });
-        console.log(videos)
         const select_data = {
             "components": [{
                 "custom_id": "music_select",
