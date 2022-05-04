@@ -1,7 +1,4 @@
-const mongo = require("aurora-mongo");
 const moment = require('moment');
-mongo.connect(process.env.db);
-const db = new mongo.Database(process.env.db_label);
 module.exports = {
     data: {
         name: "myid",
@@ -9,14 +6,14 @@ module.exports = {
     },
     async run(interaction) {
         const id = Number(moment(interaction.user.createdAt).format("MMDDHHmmss").slice(0, 9)).toString(36);
-        if(!await db.has(id))return interaction.reply({
+        if(!await globalThis.dbs.has(id))return interaction.reply({
             embeds:[{
                 color:0xff1100,
                 title:"取得失敗",
                 description:`アカウントデータが見つかりませんでした`
             }]
         });
-        const data = JSON.parse(JSON.stringify(await db.get(id)));
+        const data = JSON.parse(JSON.stringify(await globalThis.dbs.get(id)));
     interaction.reply({
         embeds:[{
             color:0x00ff22,

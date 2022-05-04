@@ -2,8 +2,12 @@ const { Client, Intents } = require('discord.js');
 const fs = require("node:fs");
 require('dotenv').config();
 const mongo = require("aurora-mongo");
-mongo.connect(process.env.db);
-const db = new mongo.Database(process.env.ban_db_label);
+mongo.connect(process.env.globalThis.dbs);
+
+globalThis.dbs  = new mongo.Database(process.env.db_label);
+globalThis.ranks = new mongo.Database(process.env.rank_db_label);
+globalThis.bans = new mongo.Database(process.env.ban_db_label);
+
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
 globalThis.client = client;
 const musicselect = require("./select/musicselect");
@@ -16,7 +20,7 @@ for (const file of commandFiles) {
   data.push(command.data);
 };
 client.on("ready", async () => {
-  globalThis.ban = JSON.parse(JSON.stringify(await db.get("ban") || []));
+  globalThis.ban = JSON.parse(JSON.stringify(await globalThis.dbs.get("ban") || []));
   client.user.setPresence({ activities: [{ name: '/helpでhelpが見れるよ!' }] });
   await client.application.commands.set(data, "");
   console.log(`完了!`)

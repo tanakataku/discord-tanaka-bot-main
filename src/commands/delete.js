@@ -1,6 +1,4 @@
-const mongo = require("aurora-mongo");
-mongo.connect(process.env.db);
-const db = new mongo.Database(process.env.db_label);
+
 module.exports = {
     data: {
         name: "delete",
@@ -24,7 +22,7 @@ module.exports = {
     async run(interaction) {
         if (interaction.options.getString('delete_type') === 'play_listdelete') {
             const id = interaction.options.getString('playid')?.toLowerCase();
-            const datas = await db.get(id)
+            const datas = await globalThis.dbs.get(id)
             const data = JSON.parse(JSON.stringify(datas || []));
             if (!datas) return interaction.reply({
                 ephemeral: true,
@@ -69,7 +67,7 @@ module.exports = {
         }
         if (interaction.options.getString('delete_type') === 'musicdelete') {
             const id = interaction.options.getString('playid')?.toLowerCase();
-            const datas = await db.get(id);
+            const datas = await globalThis.dbs.get(id);
             const data = JSON.parse(JSON.stringify(datas || []));
             if (!datas) return interaction.reply({
                 ephemeral: true,

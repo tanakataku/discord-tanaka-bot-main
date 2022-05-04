@@ -1,6 +1,3 @@
-const mongo = require("aurora-mongo");
-mongo.connect(process.env.db);
-const rank = new mongo.Database(process.env.rank_db_label);
 module.exports = {
     data: {
         name: "point",
@@ -26,7 +23,7 @@ module.exports = {
                     description:'あなたには管理者権限がありません。'
                 }]
             });
-            if (!await rank.has(interaction.guildId)) return interaction.reply({
+            if (!await globalThis.ranks.has(interaction.guildId)) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color:0xff1100,
@@ -34,7 +31,7 @@ module.exports = {
                     description: "データが元々ありません。"
                 }]
             })
-            await rank.delete(interaction.guildId);
+            await globalThis.ranks.delete(interaction.guildId);
             interaction.reply({
                 ephemeral: true,
                 embeds: [{
@@ -45,7 +42,7 @@ module.exports = {
             });
         }
         if (interaction.options.getString('point_type') === 'pointcheck') {
-            const datas = JSON.parse(await rank.get(interaction.guildId));
+            const datas = JSON.parse(await globalThis.ranks.get(interaction.guildId));
             if (!datas) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
@@ -66,7 +63,7 @@ module.exports = {
                 embeds: [{
                     color:0x00ff22,
                     title: "ポイント順位",
-                    description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
+                    description: tmp.map(d=>`${j++}位:${interaction.guild.members.cache.get(parseInt(d.slice(1), 36))}さん(${Number(d.slice(0,1))+1}ポイント)`).join("\n").slice(0,2000)
                 }]
             });
         }

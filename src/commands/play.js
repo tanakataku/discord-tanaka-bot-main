@@ -1,6 +1,4 @@
-const mongo = require("aurora-mongo");
-mongo.connect(process.env.db);
-const db = new mongo.Database(process.env.db_label);
+
 module.exports = {
     data: {
         name: "play",
@@ -13,9 +11,9 @@ module.exports = {
     },
     async run(interaction) {
         const id = interaction.options.getString('id')?.toLowerCase();
-        const check = (await db.has(id)) ? [id] : await db.keys();
+        const check = (await globalThis.dbs.has(id)) ? [id] : await globalThis.dbs.keys();
         const use_data = check[Math.floor(Math.random() * check.length)];
-        const data = await db.get(use_data);
+        const data = await globalThis.dbs.get(use_data);
         if (!data) return interaction.reply({
             ephemeral: true,
             embeds:[{

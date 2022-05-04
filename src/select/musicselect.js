@@ -1,16 +1,10 @@
 const moment = require('moment');
-const mongo = require("aurora-mongo");
 const { Player } = require("discord-music-player");
 const discordModals = require('discord-modals');
 const player = new Player(globalThis.client, {
   leaveOnEmpty: false,
 });
 discordModals(globalThis.client);
-globalThis.player = player;
-mongo.connect(process.env.db);
-const rank = new mongo.Database(process.env.rank_db_label);
-const db = new mongo.Database(process.env.db_label);
-const bandb = new mongo.Database(process.env.ban_db_label);
 const shuffle = ([...array]) => {
   for (let i = array.length - 1; i >= 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -42,13 +36,13 @@ module.exports = {
 
       }
       const q = shuffle(json.a);
-      const db_data = await db.get(id);
+      const db_data = await globalThis.dbs.get(id);
       const data = JSON.parse(JSON.stringify(db_data || {}));
       if (data[json.p]) {
-        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q, id: interaction.user.id.toString(36) });
+        data[json.p].push({ url: json.u, answer: json.a[json.a.length - 1], q: q, id: Number(interaction.user.id).toString(36) });
         this.playdata = data;
       } else {
-        data[json.p] = [{ url: json.u, answer: json.a[json.a.length - 1], q: q, id: interaction.user.id.toString(36) }];
+        data[json.p] = [{ url: json.u, answer: json.a[json.a.length - 1], q: q, id: Number(interaction.user.id).toString(36) }];
         this.playdata = data;
       };
       if (Object.keys(data).length == 6) {
@@ -71,7 +65,7 @@ module.exports = {
           }]
         });
       };
-      await db.set(id, this.playdata);
+      await globalThis.dbs.set(id, this.playdata);
       interaction.reply({
         ephemeral: true,
         embeds: [{
@@ -92,7 +86,7 @@ module.exports = {
       await interaction.deferUpdate();
       let bugi = 0;
       const json = JSON.parse(interaction.values[0]);
-      const data = JSON.parse(JSON.stringify(await db.get(json.id)));
+      const data = JSON.parse(JSON.stringify(await globalThis.dbs.get(json.id)));
       if (!interaction.member.voice.channel) return interaction.followUp({
         ephemeral: true,
         embeds: [{
@@ -186,13 +180,13 @@ module.exports = {
       const json = JSON.parse(interaction.values[0]);
       const i = this[interaction.guildId];
       if (i) i.reply.delete().catch(() => { });
-      const ranks = await rank.get(interaction.guildId);
+      const ranks = await globalThis.ranks.get(interaction.guildId);
       let rank_data = JSON.parse(ranks ?? "{}");
-      const nowrank = rank_data[interaction.user.id];
+      const nowrank = rank_data[Number(interaction.user.id).toString(36)];
       if (json.answer == json.user_answer) {
         const rankdata = nowrank + 1 || 0
-        rank_data[interaction.user.id] = rankdata;
-        await rank.set(interaction.guildId, JSON.stringify(rank_data));
+        rank_data[Number(interaction.user.id).toString(36)] = rankdata;
+        await globalThis.ranks.set(interaction.guildId, JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
             color: 0x00ff22,
@@ -203,8 +197,8 @@ module.exports = {
         });
       } else {
         const rankdata = nowrank - 1 || 0
-        rank_data[interaction.user.id] = rankdata;
-        await rank.set(interaction.guildId, JSON.stringify(rank_data));
+        rank_data[Number(interaction.user.id).toString(36)] = rankdata;
+        await globalThis.ranks.set(interaction.guildId, JSON.stringify(rank_data));
         interaction.channel.send({
           embeds: [{
             color: 0xff1100,
@@ -285,20 +279,20 @@ module.exports = {
     };
     if (interaction.customId.startsWith("ban")) {
       const id = interaction.customId.slice(3).split(",");
-      await db.delete(id[1]);
-      const bans = JSON.parse(JSON.stringify(await bandb.get("ban") || []));
+      await globalThis.dbs.delete(id[1]);
+      const bans = JSON.parse(JSON.stringify(await globalThis.bans.get("ban") || []));
       bans.push(id[0]);
-      await bandb.set("ban", bans);
+      await globalThis.bans.set("ban", bans);
       globalThis.ban = bans;
       interaction.reply("完了しました。");
     };
 
     if (interaction.customId == "delete") {
       const id = JSON.parse(interaction.values[0]);
-      const data = JSON.parse(JSON.stringify(await db.get(id.id)));
+      const data = JSON.parse(JSON.stringify(await globalThis.dbs.get(id.id)));
       delete data[Object.keys(data)[id.num]]
       if (Object.keys(data).length == 0) {
-        await db.delete(id.id);
+        await globalThis.dbs.delete(id.id);
         interaction.reply({
           color: 0x00ff22,
           ephemeral: true,
@@ -308,7 +302,7 @@ module.exports = {
           }]
         });
       } else {
-        await db.set(id.id, data);
+        await globalThis.dbs.set(id.id, data);
         interaction.reply({
           ephemeral: true,
           embeds: [{
@@ -321,7 +315,7 @@ module.exports = {
     };
     if (interaction.customId == "musicdelete") {
       const id = JSON.parse(interaction.values[0]);
-      const datas = JSON.parse(JSON.stringify(await db.get(id.id)));
+      const datas = JSON.parse(JSON.stringify(await globalThis.dbs.get(id.id)));
       const name = Object.keys(datas)[id.num];
       const data = datas[name]
       if (data.length == 1) {
@@ -362,11 +356,11 @@ module.exports = {
     };
     if (interaction.customId == "music_delete") {
       const id = JSON.parse(interaction.values[0]);
-      const datas = JSON.parse(JSON.stringify(await db.get(id.id)));
+      const datas = JSON.parse(JSON.stringify(await globalThis.dbs.get(id.id)));
       delete datas[id.title][id.num]
       const fotdata = datas[id.title].filter(x => x);
       datas[id.title] = fotdata
-      await db.set(id.id, datas)
+      await globalThis.dbs.set(id.id, datas)
       interaction.reply({
         ephemeral: true,
         embeds: [{
