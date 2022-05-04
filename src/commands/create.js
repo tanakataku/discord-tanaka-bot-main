@@ -10,7 +10,7 @@ module.exports = {
         description: "音楽の問題を作成します。",
         options: [{
             type: "STRING",
-            name: "title",
+            name: "search",
             description: "検索タイトルを入れてください。",
             required: true
         }, {
@@ -34,14 +34,14 @@ module.exports = {
         let i = 1;
         await interaction.deferReply({ephemeral: true});
         const sc = interaction.options;
-        const title = sc.getString('title');
+        const title = sc.getString('search');
         const q = naosu(sc.getString('question')).split(",");
         const check = q.map(x=>{
             if(x.length>=85)return interaction.followUp({
                 ephemeral: true,
                 embeds:[{
                     title:"エラー",
-                    description:`${x}\nは85字を超えています`
+                    description:`${x}\nは85字を超えています。`
                 }]
             })
         });

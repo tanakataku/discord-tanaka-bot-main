@@ -8,7 +8,7 @@ module.exports = {
         options: [{
             type: "STRING",
             name: "id",
-            description: "IDを入れてください何もない場合はランダムにしてください。"
+            description: "IDを入れてください何もない場合はランダムになります。"
         }],
     },
     async run(interaction) {

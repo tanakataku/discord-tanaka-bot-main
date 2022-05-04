@@ -22,6 +22,7 @@ client.on("ready", async () => {
   console.log("完了!")
 });
 client.on("interactionCreate", interaction => {
+  if(!interaction.guildId)return interaction.reply("helpは/helpと**サーバーで**打ってください");
   if (globalThis.ban.includes(interaction.user.id)) return;
   if (interaction.isCommand()) {
     try {
