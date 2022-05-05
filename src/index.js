@@ -63,7 +63,7 @@ client.on('modalSubmit', async modal => {
     const button2 = {
       components: [
         {
-          custom_id: `ban${interaction.user.id}`,
+          custom_id: `ban${modal.user.id}`,
           label: "報告ユーザーBAN",
           style: 4,
           type: 2,
@@ -96,7 +96,7 @@ client.on('modalSubmit', async modal => {
     const button2 = {
       components: [
         {
-          custom_id: `ban${interaction.user.id}`,
+          custom_id: `ban${modal.user.id}`,
           label: "報告ユーザーBAN",
           style: 4,
           type: 2,
