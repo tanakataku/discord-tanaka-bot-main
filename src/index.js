@@ -80,8 +80,8 @@ client.on('modalSubmit', async modal => {
       components: [button2]
     });
   } else {
-    const userid = data[1]
     const data = modal.customId.split(",");
+    const userid = data[1]
     const button = {
       components: [
         {
