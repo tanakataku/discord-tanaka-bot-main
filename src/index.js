@@ -27,7 +27,14 @@ client.on("ready", async () => {
 });
 client.on("interactionCreate", interaction => {
   if (!interaction.guildId) return interaction.reply("helpは/helpと**サーバーで**打ってください");
-  if (globalThis.ban.includes(interaction.user.id)) return;
+  if (globalThis.ban.includes(interaction.user.id)) return interaction.reply({
+    ephemeral: true,
+    embeds: [{
+      color: 0xff1100,
+      title: "警告",
+      description: "あなたはBANされています。\n間違いの場合はBURI#9515まで。"
+    }]
+  });
   if (interaction.isCommand()) {
     try {
       commands[interaction.commandName].run(interaction);
@@ -38,7 +45,14 @@ client.on("interactionCreate", interaction => {
   if (interaction.isSelectMenu() || interaction.isButton()) musicselect.run(interaction);
 });
 client.on('modalSubmit', async modal => {
-  if (globalThis.ban.includes(modal.user.id)) return;
+  if (globalThis.ban.includes(modal.user.id)) return interaction.reply({
+    ephemeral: true,
+    embeds: [{
+      color: 0xff1100,
+      title: "警告",
+      description: "あなたはBANされています。\n間違いの場合はBURI#9515まで。"
+    }]
+  });
   await modal.reply({
     embeds: [{
       color: 0x00ff22,
