@@ -60,12 +60,24 @@ client.on('modalSubmit', async modal => {
     }]
   });
   if(modal.customId=="feedback"){
+    const button2 = {
+      components: [
+        {
+          custom_id: `ban${interaction.user.id}`,
+          label: "報告ユーザーBAN",
+          style: 4,
+          type: 2,
+        }
+      ],
+      type: 1
+    };
     client.channels.cache.get(process.env.feedback_channel).send({
       embeds: [{
         color: 0xff1100,
         title: "  フィードバック",
         description: `内容:${modal.getTextInputValue('input')}`
       }],
+      components: [button,button2]
     });
   }else{
     const userid = data[1]
