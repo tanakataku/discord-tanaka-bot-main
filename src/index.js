@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 };
 client.on("ready", async () => {
   globalThis.ban = JSON.parse(JSON.stringify(await globalThis.dbs.get("ban") || []));
-  client.user.setPresence({ activities: [{ name: '/help' ,type:LISTENING}] });
+  client.user.setActivity('/help', { type: 'LISTENING' });
   await client.application.commands.set(data, "");
   console.log(`完了!`)
 });
