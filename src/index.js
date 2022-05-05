@@ -45,7 +45,7 @@ client.on("interactionCreate", interaction => {
   if (interaction.isSelectMenu() || interaction.isButton()) musicselect.run(interaction);
 });
 client.on('modalSubmit', async modal => {
-  if (globalThis.ban.includes(modal.user.id)) return interaction.reply({
+  if (globalThis.ban.includes(modal.user.id)) return modal.reply({
     ephemeral: true,
     embeds: [{
       color: 0xff1100,
@@ -53,6 +53,7 @@ client.on('modalSubmit', async modal => {
       description: "あなたはBANされています。\n間違いの場合はBURI#9515まで。"
     }]
   });
+  await modal.deferReply({ephemeral:true});
   await modal.reply({
     ephemeral: true,
     embeds: [{
