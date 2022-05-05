@@ -45,27 +45,47 @@ client.on('modalSubmit', async modal => {
       title: "ご協力感謝します。"
     }]
   });
-  const userid = data[1]
-  const data = modal.customId.split(",");
-  const button = {
-    components: [
-      {
-        custom_id: `ban${userid},${data[2]}`,
-        label: "クイックBAN",
-        style: 4,
-        type: 2,
-      }
-    ],
-    type: 1
-  };
-  client.channels.cache.get(process.env.report_channel).send({
-    embeds: [{
-      color: 0xff1100,
-      title: "報告",
-      description: `対象動画:"https://youtube.com/watch?v=${data[0]}"\n対象ユーザー:${userid}\n報告ユーザー:${modal.user.id}(${modal.user.tag})\nプレイリストID:${data[2]}\n報告内容:${modal.getTextInputValue('input')}`
-    }],
-    components: [button]
-  });
-
+  if(modal.customId=="feedback"){
+    client.channels.cache.get(process.env.feedback_channel).send({
+      embeds: [{
+        color: 0xff1100,
+        title: "  フィードバック",
+        description: `内容:${modal.getTextInputValue('input')}`
+      }],
+    });
+  }else{
+    const userid = data[1]
+    const data = modal.customId.split(",");
+    const button = {
+      components: [
+        {
+          custom_id: `ban${userid},${data[2]}`,
+          label: "報告されたユーザーBAN",
+          style: 4,
+          type: 2,
+        }
+      ],
+      type: 1
+    };
+    const button2 = {
+      components: [
+        {
+          custom_id: `ban${interaction.user.id}`,
+          label: "報告ユーザーBAN",
+          style: 4,
+          type: 2,
+        }
+      ],
+      type: 1
+    };
+    client.channels.cache.get(process.env.report_channel).send({
+      embeds: [{
+        color: 0xff1100,
+        title: "報告",
+        description: `対象動画:"https://youtube.com/watch?v=${data[0]}"\n対象ユーザー:${userid}\n報告ユーザー:${modal.user.id}(${modal.user.tag})\nプレイリストID:${data[2]}\n報告内容:${modal.getTextInputValue('input')}`
+      }],
+      components: [button,button2]
+    });
+  }
 });
 client.login(process.env.token);

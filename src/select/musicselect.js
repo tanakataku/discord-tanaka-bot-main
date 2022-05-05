@@ -12,6 +12,28 @@ const shuffle = ([...array]) => {
   };
   return array;
 };
+const feedback = new discordModals.Modal()
+  .setCustomId("feedback")
+  .setTitle('フィードバックを入力してください。')
+  .addComponents(
+    new discordModals.TextInputComponent()
+      .setCustomId(`input`)
+      .setLabel(`運営に届きます。`)
+      .setStyle('LONG')
+      .setPlaceholder('ここにフィードバックを記入してください。')
+      .setRequired(true)
+  );
+const feedback_button = {
+  components: [
+    {
+      custom_id: `feedback_button`,
+      label: "運営にフィードバックをする。",
+      style: 1,
+      type: 2,
+    }
+  ],
+  type: 1
+};
 module.exports = {
   async run(interaction) {
     /*
@@ -239,10 +261,11 @@ module.exports = {
     /*
     
     
-    button
+    next
     
     
     */
+
 
     if (interaction.customId == "next") {
       interaction.deleteReply()
@@ -263,6 +286,11 @@ module.exports = {
       await interaction.deferUpdate().catch(() => { });
     }
 
+    /*
+
+    stop
+
+    */
 
 
     if (interaction.customId == "stop") {
@@ -283,7 +311,13 @@ module.exports = {
       guild.stop();
       guild.clearQueue();
       await interaction.deferUpdate().catch(() => { });
-    }
+    };
+
+    /*
+
+    report
+
+    */
 
     if (interaction.customId.startsWith("re")) {
       const url = interaction.customId.slice(2);
@@ -303,9 +337,15 @@ module.exports = {
         interaction: interaction
       });
     };
+
+    /*
+
+    ban
+
+    */
     if (interaction.customId.startsWith("ban")) {
       const id = interaction.customId.slice(3).split(",");
-      await globalThis.dbs.delete(id[1]);
+      if (id[1]) await globalThis.dbs.delete(id[1]);
       const bans = JSON.parse(JSON.stringify(await globalThis.bans.get("ban") || []));
       bans.push(id[0]);
       await globalThis.bans.set("ban", bans);
@@ -313,6 +353,11 @@ module.exports = {
       interaction.reply("完了しました。");
     };
 
+    /*
+
+    playlist_delete
+
+    */
     if (interaction.customId == "delete") {
       const id = JSON.parse(interaction.values[0]);
       const data = JSON.parse(JSON.stringify(await globalThis.dbs.get(id.id)));
@@ -339,6 +384,12 @@ module.exports = {
         });
       };
     };
+
+    /*
+
+    music_delete
+
+    */
     if (interaction.customId == "musicdelete") {
       const id = JSON.parse(interaction.values[0]);
       const datas = JSON.parse(JSON.stringify(await globalThis.dbs.get(id.id)));
@@ -396,5 +447,106 @@ module.exports = {
         }]
       });
     };
+
+    /*
+
+    help
+
+    */
+    if (interaction.customId == "help_select") {
+      const id = interaction.values[0];
+      await interaction.deferUpdate();
+      if (id == "create") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `create-help`,
+            description: `コマンド:/play\n詳細コマンド:/create 検索ワード 選択肢 答え プレイリスト名\n\n**詳細説明**\n検索ワードはYoutubeで自動検索される際に検索する言葉を入れてください。\n選択肢はコンマ(,)で区切ってください最大で25個、1個あたり80字まで登録できます。\n答えには問題の答えを入れてください。\nプレイリスト名は最大10個まで作成可能で名前をかぶらせれば自動でつかされていきます。\n概要:音楽の問題を作成します。`
+          }],
+          components: [globalThis.help]
+        });
+      };
+      if (id == "play") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `play-help`,
+            description: `コマンド:/play\n詳細コマンド:/play プレイリストID\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n指定されていない場合またはIDが見つからない場合はランダムで検索されます。\n注**DiscordのIDではありません**\n概要:音楽クイズを開始します。`
+          }],
+          components: [globalThis.help]
+        });
+      };
+      if (id == "delete") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `delete-help`,
+            description: `コマンド:/delete\n詳細コマンド:/delete プレイリストID 音楽削除またはプレイリスト削除を選択\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n注**DiscordのIDではありません**\n音楽削除はプレイリスト内にある音楽を削除します。(注:音楽が1個の場合は使用できません)\nプレイリスト削除はプレイリストを削除します。(注:1この場合はIDごと消されます)\n概要:作成された問題の削除をします。`
+          }],
+          components: [globalThis.help]
+        });
+      };
+      if (id == "myid") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `myid-help`,
+            description: `コマンド:/myid\n詳細コマンド:/myid\n\n**詳細説明**\n自分のIDを確認できます。\n詳細でプレイリスト一覧の名前を出ます。\n概要:IDの確認をします。`
+          }],
+          components: [globalThis.help]
+        });
+      };
+      if (id == "point") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `point-help`,
+            description: `コマンド:/point\n詳細コマンド:/point ポイント確認またはポイント削除\n\n**詳細説明**\nポイント確認はギルド内のポイントを順位をつけて出します。\nポイント削除はギルド内のすべてのユーザーのポイントを消します。(注:1.一度消した場合は取り消しができません。2.管理者権限がないとできません。)\n概要:ポイントの管理をします。`
+          }],
+          components: [globalThis.help]
+        });
+      };
+      if (id == "other") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `other`,
+            description: `**使用パッケージ**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**ホスティングサーバー**:Heroku(フリープラン)\n**使用データベース**:Mongo(フリープラン)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)`
+          }],
+          components: [globalThis.help, feedback_button]
+        });
+      };
+      if (id == "help") {
+        interaction.editReply({
+          ephemeral: true,
+          embeds: [{
+            color: 0x00ff22,
+            title: `help`,
+            description: `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。`
+          }],
+          components: [globalThis.help]
+        });
+      };
+    };
+
+    /*
+
+    feedback_button
+
+    */
+
+    if (interaction.customId == "feedback_button") {
+      discordModals.showModal(feedback, {
+        client: globalThis.client,
+        interaction: interaction
+      });
+    };
+    
   }
 }

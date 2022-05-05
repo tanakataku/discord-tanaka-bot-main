@@ -4,13 +4,50 @@ module.exports = {
         description: "ヘルプを表示します。"
     },
     async run(interaction) {
+        globalThis.help = {
+            "components": [{
+              "custom_id": "help_select",
+              "placeholder": "詳細を見たいコマンドを選択してください。",
+              "options":[{
+                  "label": `play`,
+                  "value": "play"
+                },
+                {
+                    "label": `create`,
+                    "value": `create`
+                  },
+                  {
+                    "label": `delete`,
+                    "value": `delete`
+                  },
+                  {
+                    "label": `myid`,
+                    "value": `myid`
+                  },{
+                    "label": `point`,
+                    "value": `point`
+                  },
+                  {
+                    "label": `other`,
+                    "value": `other`
+                  },
+                  {
+                    "label": `help`,
+                    "value": `help`
+                  },
+                ],
+              "type": 3
+            }],
+            "type": 1
+          };
         interaction.reply({
             ephemeral: true,
             embeds: [{
                 color: 0x00ff22,
                 title: `help`,
-                description: `**/create** **検索音楽名** **選択肢**(,で区切ってください) **プレイリスト名**　**問題の答え**\n検索ワードはYoutubeで検索するワードです。\n選択肢は最大**25個**まで設定できます。注意,で区切ってください(例:a,b,c)\nプレイリストは一人**5個**までです。また、プレイリストの中身は**10個**までとなっています。\n概要:音楽の問題を作成します。\n\n**/delete** **ID** 音楽削除またはプレイリスト削除\nIDは**独自に割り振られているもの**にしてください。\n概要:プレイリストまたはプレイリスト内の音楽を削除します。\n\n**/play** **ID**または**空欄**\nIDは**独自に割り振られているもの**にしてください。\n**空欄の場合**はランダムで検索されます。\n概要:音楽クイズをスタートします。\n\n**/point** ポイント確認またはポイント削除\n概要:サーバーの**すべてのユーザーポイント**を削除または確認します。\n\n製作者:[BURI#9515](https://discord.com/users/672422208089489413)\n管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字の報告はBURI#9515またはYURIRI#2724まで。\n[サポートサーバー](https://discord.gg/XqymQk4D24)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)\nping:${client.ws.ping}ms\n\n**使用パッケージ**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search`
-            }]
-        })
+                description: `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。`
+            }],
+            components:[globalThis.help]
+        });
     }
 };
