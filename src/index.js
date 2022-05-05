@@ -20,7 +20,7 @@ for (const file of commandFiles) {
   data.push(command.data);
 };
 client.on("ready", async () => {
-  globalThis.ban = JSON.parse(JSON.stringify(await globalThis.dbs.get("ban") || []));
+  globalThis.ban = JSON.parse(JSON.stringify(await globalThis.bans.get("ban") || []));
   client.user.setActivity('/help', { type: 'LISTENING' });
   await client.application.commands.set(data, "");
   console.log(`完了!`)
