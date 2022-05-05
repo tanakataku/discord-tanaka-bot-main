@@ -53,9 +53,7 @@ client.on('modalSubmit', async modal => {
       description: "あなたはBANされています。\n間違いの場合はBURI#9515まで。"
     }]
   });
-  await modal.deferReply({ephemeral:true});
   await modal.reply({
-    ephemeral: true,
     embeds: [{
       color: 0x00ff22,
       title: "ご協力感謝します。"
@@ -76,8 +74,8 @@ client.on('modalSubmit', async modal => {
     client.channels.cache.get(process.env.feedback_channel).send({
       embeds: [{
         color: 0xff1100,
-        title: "  フィードバック",
-        description: `内容:${modal.getTextInputValue('input')}`
+        title: "フィードバック",
+        description: `ユーザー:${modal.user.id}(${modal.user.tag})\n内容:${modal.getTextInputValue('input')}`
       }],
       components: [button2]
     });
