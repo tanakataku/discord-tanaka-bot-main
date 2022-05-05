@@ -77,7 +77,7 @@ client.on('modalSubmit', async modal => {
         title: "  フィードバック",
         description: `内容:${modal.getTextInputValue('input')}`
       }],
-      components: [button,button2]
+      components: [button2]
     });
   }else{
     const userid = data[1]
