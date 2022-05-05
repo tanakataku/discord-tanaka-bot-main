@@ -93,6 +93,7 @@ module.exports = {
     
     
     */
+    let guildQueue = player.getQueue(interaction.guildId);
     if (interaction.customId == "start_select") {
       await interaction.deferUpdate();
       let bugi = 1;
@@ -141,7 +142,6 @@ module.exports = {
             description: (interaction.locale == "ja") ? "全音楽の再生が終わりました。" : "All music has finished playing."
           }]
         });
-        let guildQueue = player.getQueue(interaction.guildId);
         await queue.play(`https://youtube.com/watch?v=${data[json.playname][num].url}`)
           .catch(_ => {
             if (!guildQueue) queue.stop();
