@@ -49,14 +49,14 @@ client.on('modalSubmit', async modal => {
     ephemeral: true,
     embeds: [{
       color: 0xff1100,
-      title: (interaction.locale == "ja") ? "警告" : "warning",
-      description: (interaction.locale == "ja") ? "あなたはBANされています。\n間違いの場合はBURI#9515まで。" : "You are banned. \n If you make a mistake, call BURI#9515."
+      title: (modal.locale == "ja") ? "警告" : "warning",
+      description: (modal.locale == "ja") ? "あなたはBANされています。\n間違いの場合はBURI#9515まで。" : "You are banned. \n If you make a mistake, call BURI#9515."
     }]
   });
   await modal.reply({
     embeds: [{
       color: 0x00ff22,
-      title: (interaction.locale == "ja") ? "ご協力感謝します。" : "Thank you for your cooperation."
+      title: (modal.locale == "ja") ? "ご協力感謝します。" : "Thank you for your cooperation."
     }]
   });
   if (modal.customId == "feedback") {
