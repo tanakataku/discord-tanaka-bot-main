@@ -54,6 +54,7 @@ client.on('modalSubmit', async modal => {
     }]
   });
   await modal.reply({
+    ephemeral: true,
     embeds: [{
       color: 0x00ff22,
       title: "ご協力感謝します。"
