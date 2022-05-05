@@ -1,0 +1,1 @@
+tanaka: node ./src/index.js
