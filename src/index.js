@@ -27,7 +27,7 @@ client.on("ready", async () => {
 });
 client.on("interactionCreate", interaction => {
   if (!interaction.guildId) return interaction.reply((interaction.locale == "ja") ? "helpは/helpと**サーバーで**打ってください" : "Type help in /help and **on the server**");
-  if (globalThis.ban.includes(interaction.user.id)) return interaction.reply({
+  if (globalThis.ban?.includes(interaction.user.id)) return interaction.reply({
     ephemeral: true,
     embeds: [{
       color: 0xff1100,
@@ -45,7 +45,7 @@ client.on("interactionCreate", interaction => {
   if (interaction.isSelectMenu() || interaction.isButton()) musicselect.run(interaction);
 });
 client.on('modalSubmit', async modal => {
-  if (globalThis.ban.includes(modal.user.id)) return modal.reply({
+  if (globalThis.ban?.includes(modal.user.id)) return modal.reply({
     ephemeral: true,
     embeds: [{
       color: 0xff1100,
