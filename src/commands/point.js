@@ -19,16 +19,16 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: 'あなたには管理者権限がありません。'
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? 'あなたには管理者権限がありません。' : "You do not have administrator privileges."
                 }]
             });
             if (!await globalThis.ranks.has(interaction.guildId)) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "データが元々ありません。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "データが元々ありません。" : "Originally there is no data."
                 }]
             })
             await globalThis.ranks.delete(interaction.guildId);
@@ -36,8 +36,8 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0x00ff22,
-                    title: "成功",
-                    description: "データの削除に成功しました。"
+                    title: (interaction.locale == "ja") ? "成功" : "success",
+                    description: (interaction.locale == "ja") ? "データの削除に成功しました。" : "The data was deleted successfully."
                 }]
             });
         }
@@ -47,8 +47,8 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "サーバーにポイント情報がありません。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "サーバーにポイント情報がありません。" : "There is no point information on the server."
                 }]
             });
             let i = 0;
@@ -62,8 +62,8 @@ module.exports = {
             interaction.reply({
                 embeds: [{
                     color: 0x00ff22,
-                    title: "ポイント順位",
-                    description: tmp.map(d => `${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0, 1)) + 1}ポイント)`).join("\n").slice(0, 2000)
+                    title: (interaction.locale == "ja") ? "ポイント順位" : "Point ranking",
+                    description: (interaction.locale == "ja") ? tmp.map(d => `${j++}位:${interaction.guild.members.cache.get(d.slice(1))}さん(${Number(d.slice(0, 1)) + 1}ポイント)`).join("\n").slice(0, 2000) : tmp.map(d => `Rank${j++}:Mr.${interaction.guild.members.cache.get(d.slice(1))}(${Number(d.slice(0, 1)) + 1}point)`).join("\n").slice(0, 2000)
                 }]
             });
         }

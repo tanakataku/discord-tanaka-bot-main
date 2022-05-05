@@ -27,23 +27,23 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "プレイリストIDが見つかりませんでした。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "プレイリストIDが見つかりませんでした。" : "Playlist ID not found."
                 }]
             });
             if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "ユーザーIDが一致しません。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "ユーザーIDが一致しません。" : "User ID does not match."
                 }]
             });
             let i = 0;
             const select_data = {
                 "components": [{
                     "custom_id": "delete",
-                    "placeholder": "対象のプレイリストを選択してください。",
+                    "placeholder": (interaction.locale == "ja") ? "対象のプレイリストを選択してください。" : "Select the target playlist.",
                     "options": Object.keys(data).map(item => {
                         return {
                             "label": item,
@@ -58,7 +58,7 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0x00ff22,
-                    title: "**消したいプレイリスト**を選択してください。",
+                    title: (interaction.locale == "ja") ? "**消したいプレイリスト**を選択してください。" : "**Select the playlist** you want to erase.",
                     description: Object.keys(data).join("\n")
                 }],
                 components: [select_data]
@@ -72,31 +72,31 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "プレイリストIDが見つかりませんでした。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "プレイリストIDが見つかりませんでした。" : "Playlist ID not found."
                 }]
             });
             if (!data[Object.keys(data)[0]][0]) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "ユーザーIDが見つかりませんでした。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "ユーザーIDが見つかりませんでした。" : "User ID not found."
                 }]
             });
             if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: "ユーザーIDが一致しません。"
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? "ユーザーIDが一致しません。" : "User ID does not match."
                 }]
             });
             let i = 0;
             const select_data = {
                 "components": [{
                     "custom_id": "musicdelete",
-                    "placeholder": "対象のプレイリストを選択してください。",
+                    "placeholder": (interaction.locale == "ja") ? "対象のプレイリストを選択してください。" : "Please select the target playlist.",
                     "options": Object.keys(data).map(item => {
                         return {
                             "label": item,
@@ -111,7 +111,7 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0x00ff22,
-                    title: "**消したいプレイリスト**を選択してください。",
+                    title: (interaction.locale == "ja") ? "**消したいプレイリスト**を選択してください。" : "**Select the playlist** you want to erase.",
                     description: Object.keys(data).join("\n")
                 }],
                 components: [select_data]

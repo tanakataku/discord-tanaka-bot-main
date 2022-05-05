@@ -41,14 +41,14 @@ module.exports = {
                 ephemeral: true,
                 embeds: [{
                     color: 0xff1100,
-                    title: "エラー",
-                    description: `${x}\nは85字を超えています。`
+                    title: (interaction.locale == "ja") ? "エラー" : "error",
+                    description: (interaction.locale == "ja") ? `${x}\nは85字を超えています。` : `${x}\n is over 85 characters. `
                 }]
             })
         });
         if (check[0] !== undefined) return;
-        if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `入力タイプが違います。\n詳細:次の形式で入力してください。\n例:**a,b,c**` }] });
-        if (q[25]) return interaction.followUp({ ephemeral: true, embeds: [{ title: "エラー", description: `選択肢が多すぎます、**25個以内**にしてください。` }] });
+        if (!q[0]) return interaction.followUp({ ephemeral: true, embeds: [{ title: (interaction.locale == "ja") ? "エラー" : "error", description: (interaction.locale == "ja") ? `入力タイプが違います。\n詳細:次の形式で入力してください。\n例:**a,b,c**` : `Input type is different. \nDetails:Please input in the following format. \nExample:**a,b,c**` }] });
+        if (q[25]) return interaction.followUp({ ephemeral: true, embeds: [{ title: (interaction.locale == "ja") ? "エラー" : "error", description: (interaction.locale == "ja") ? `選択肢が多すぎます、**25個以内**にしてください。` : "Too many choices, please keep it to **25 or less**." }] });
         q.push(sc.getString('answer'));
         const r = await yts(title);
         const videos = r.videos.slice(0, 10);
@@ -56,14 +56,14 @@ module.exports = {
             ephemeral: true,
             embeds: [{
                 color: 0xff1100,
-                title: `エラー`,
-                description: "動画が見つかりませんでした。"
+                title: (interaction.locale == "ja") ? "エラー" : "error",
+                description: (interaction.locale == "ja") ? "動画が見つかりませんでした。" : "Video not found."
             }]
         });
         const select_data = {
             "components": [{
                 "custom_id": "music_select",
-                "placeholder": "対象の曲を選択してください。",
+                "placeholder": (interaction.locale == "ja") ? "対象の曲を選択してください。" : "Please select the target song.",
                 "options": videos.map(data => {
                     let rand = String(Math.floor(Math.random() * 1000000) + 1);
                     setTimeout(() => {
@@ -87,8 +87,8 @@ module.exports = {
             ephemeral: true,
             embeds: [{
                 color: 0x00ff22,
-                title: `**${title.slice(0, 15)}**の検索結果`,
-                description: videos.map(data => `**${i++}**個目\n**タイトル**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**再生時間**:${data.timestamp}秒`).join("\n\n")
+                title: (interaction.locale == "ja") ? `**${title.slice(0, 15)}**の検索結果` : `Search results for **${title.slice(0, 15)}**`,
+                description: (interaction.locale == "ja") ? videos.map(data => `**${i++}**個目\n**タイトル**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**再生時間**:${data.timestamp}秒`).join("\n\n") : videos.map(data => `**${i++}**Item\n**Title**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**Playback time**:${data.timestamp}s`).join("\n\n")
             }],
             components: [select_data]
         });

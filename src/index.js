@@ -26,14 +26,13 @@ client.on("ready", async () => {
   console.log(`完了!`)
 });
 client.on("interactionCreate", interaction => {
-  console.log(interaction.locale)
-  if (!interaction.guildId) return interaction.reply("helpは/helpと**サーバーで**打ってください");
+  if (!interaction.guildId) return interaction.reply((interaction.locale == "ja") ? "helpは/helpと**サーバーで**打ってください" : "Type help in /help and **on the server**");
   if (globalThis.ban.includes(interaction.user.id)) return interaction.reply({
     ephemeral: true,
     embeds: [{
       color: 0xff1100,
-      title: "警告",
-      description: "あなたはBANされています。\n間違いの場合はBURI#9515まで。"
+      title: (interaction.locale == "ja") ? "警告" : "warning",
+      description: (interaction.locale == "ja") ? "あなたはBANされています。\n間違いの場合はBURI#9515まで。" : "You are banned. \n If you make a mistake, call BURI#9515."
     }]
   });
   if (interaction.isCommand()) {
@@ -50,17 +49,17 @@ client.on('modalSubmit', async modal => {
     ephemeral: true,
     embeds: [{
       color: 0xff1100,
-      title: "警告",
-      description: "あなたはBANされています。\n間違いの場合はBURI#9515まで。"
+      title: (interaction.locale == "ja") ? "警告" : "warning",
+      description: (interaction.locale == "ja") ? "あなたはBANされています。\n間違いの場合はBURI#9515まで。" : "You are banned. \n If you make a mistake, call BURI#9515."
     }]
   });
   await modal.reply({
     embeds: [{
       color: 0x00ff22,
-      title: "ご協力感謝します。"
+      title: (interaction.locale == "ja") ? "ご協力感謝します。" : "Thank you for your cooperation."
     }]
   });
-  if(modal.customId=="feedback"){
+  if (modal.customId == "feedback") {
     const button2 = {
       components: [
         {
@@ -80,7 +79,7 @@ client.on('modalSubmit', async modal => {
       }],
       components: [button2]
     });
-  }else{
+  } else {
     const userid = data[1]
     const data = modal.customId.split(",");
     const button = {
@@ -111,7 +110,7 @@ client.on('modalSubmit', async modal => {
         title: "報告",
         description: `対象動画:"https://youtube.com/watch?v=${data[0]}"\n対象ユーザー:${userid}\n報告ユーザー:${modal.user.id}(${modal.user.tag})\nプレイリストID:${data[2]}\n報告内容:${modal.getTextInputValue('input')}`
       }],
-      components: [button,button2]
+      components: [button, button2]
     });
   }
 });

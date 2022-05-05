@@ -17,14 +17,14 @@ module.exports = {
             ephemeral: true,
             embeds: [{
                 color: 0xff1100,
-                title: "エラー",
-                description: "問題が一つも登録されていない。\nもしくはDBの故障です。"
+                title: (interaction.locale == "ja") ? "エラー" : "error",
+                description: (interaction.locale == "ja") ? "問題が一つも登録されていない。\nもしくはDBの故障です。" : "No problem has been registered. \n Or DB failure."
             }]
         });
         const select_data = {
             "components": [{
                 "custom_id": "start_select",
-                "placeholder": "対象のプレイリストを選択してください。",
+                "placeholder": (interaction.locale == "ja") ? "対象のプレイリストを選択してください。" : "Select the target playlist.",
                 "options": Object.keys(data).map(item => {
                     return {
                         "label": item,
@@ -39,8 +39,8 @@ module.exports = {
         interaction.reply({
             embeds: [{
                 color: 0x00ff22,
-                title: `**${use_data}**の検索結果`,
-                description: `**プレイリストタイトル**\n${Object.keys(json).map(datas => `${datas},曲数:${json[datas].length}`).join("\n")}`
+                title: (interaction.locale == "ja") ? `**${use_data}**の検索結果` : `Search results for **${use_data}**.`,
+                description: (interaction.locale == "ja") ? `**プレイリストタイトル**\n${Object.keys(json).map(datas => `${datas},曲数:${json[datas].length}`).join("\n")}` : `**Playlist title**\n${Object.keys(json).map(datas => `${datas},number of songs:${json[datas].length}`).join("\n")}`
             }],
             components: [select_data]
         });

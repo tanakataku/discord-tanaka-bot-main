@@ -23,17 +23,6 @@ const feedback = new discordModals.Modal()
       .setPlaceholder('ここにフィードバックを記入してください。')
       .setRequired(true)
   );
-const feedback_button = {
-  components: [
-    {
-      custom_id: `feedback_button`,
-      label: "運営にフィードバックをする。",
-      style: 1,
-      type: 2,
-    }
-  ],
-  type: 1
-};
 module.exports = {
   async run(interaction) {
     /*
@@ -48,8 +37,8 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           color: 0xff1100,
-          title: "エラー",
-          description: "操作が一定時間なかったため、一時データが消されました。\nもう一度やり直してください。"
+          title: (interaction.locale == "ja") ? "エラー" : "error",
+          description: (interaction.locale == "ja") ? "操作が一定時間なかったため、一時データが消されました。\nもう一度やり直してください。" : "The temporary data was erased because there was no operation for a certain period of time. \n Please try again."
         }]
       })
       try {
@@ -72,8 +61,8 @@ module.exports = {
           ephemeral: true,
           embeds: [{
             color: 0xff1100,
-            title: "エラー",
-            description: `**5個以上**のプレイリストの登録はできません。`
+            title: (interaction.locale == "ja") ? "エラー" : "error",
+            description: (interaction.locale == "ja") ? `**5個以上**のプレイリストの登録はできません。` : `**5 or more** playlists cannot be registered. `
           }]
         });
       };
@@ -82,8 +71,8 @@ module.exports = {
           ephemeral: true,
           embeds: [{
             color: 0xff1100,
-            title: "エラー",
-            description: `プレイリスト内に**10個以上**の音楽は保存できません。`
+            title: (interaction.locale == "ja") ? "エラー" : "error",
+            description: (interaction.locale == "ja") ? `プレイリスト内に**10個以上**の音楽は保存できません。` : `You cannot save ** 10 or more ** music in a playlist. `
           }]
         });
       };
@@ -92,8 +81,8 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           color: 0x00ff22,
-          title: "完了しました",
-          description: `**登録ID**:${id}\n**答え**:${json.a[json.a.length - 1]}\n**選択肢**:${q}\n**プレイリスト名**:${json.p}\n**登録曲数**:${this.playdata[json.p].length}\n**登録プレイリスト数**:${Object.keys(data).length}`
+          title: (interaction.locale == "ja") ? "完了しました" : "Has completed",
+          description: (interaction.locale == "ja") ? `**登録ID**:${id}\n**答え**:${json.a[json.a.length - 1]}\n**選択肢**:${q}\n**プレイリスト名**:${json.p}\n**登録曲数**:${this.playdata[json.p].length}\n**登録プレイリスト数**:${Object.keys(data).length}` : `**Registration ID**:${id}\n**answer**:${json.a[json.a.length - 1]}\n**Choices**:${q}\n**Playlist name**:${json.p}\n**Number of registered songs**:${this.playdata[json.p].length}\n**Number of registered playlists**:${Object.keys(data).length}`
         }]
       });
     };
@@ -113,24 +102,24 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           color: 0xff1100,
-          title: "エラー",
-          description: `ボイスチャンネルに参加してください。`
+          title: (interaction.locale == "ja") ? "エラー" : "error",
+          description: (interaction.locale == "ja") ? `ボイスチャンネルに参加してください。` : `Join the voice channel. `
         }]
       });
       if (!interaction.guild.me.permissionsIn(interaction.member.voice.channel).has("1048576")) return interaction.followUp({
         ephemeral: true,
         embeds: [{
           color: 0xff1100,
-          title: "エラー",
-          description: '私にボイスチャンネル接続権限がないです。'
+          title: (interaction.locale == "ja") ? "エラー" : "error",
+          description: (interaction.locale == "ja") ? '私にボイスチャンネル接続権限がないです。' : "I don't have voice channel connection rights."
         }]
       });
       if (!interaction.guild.me.permissionsIn(interaction.member.voice.channel).has('2097152')) return interaction.followUp({
         ephemeral: true,
         embeds: [{
           color: 0xff1100,
-          title: "エラー",
-          description: '私にボイスチャンネル発言権限がないです。'
+          title: (interaction.locale == "ja") ? "エラー" : "error",
+          description: (interaction.locale == "ja") ? '私にボイスチャンネル発言権限がないです。' : "I don't have voice channel speaking authority. "
         }]
       });
       let queue = player.createQueue(interaction.guildId);
@@ -139,8 +128,8 @@ module.exports = {
           ephemeral: true,
           embeds: [{
             color: 0xff1100,
-            title: "原因不明なエラー",
-            description: `${String(e)}\nもう一度やり直してください。\n解決しない場合はBURI#9515まで。`
+            title: (interaction.locale == "ja") ? "原因不明なエラー" : "Unknown error",
+            description: (interaction.locale == "ja") ? `${String(e)}\nもう一度やり直してください。\n解決しない場合はBURI#9515まで。` : `${String(e)}\nPlease try again. \nIf it doesn't work, go to BURI#9515.`
           }]
         }));
       if (check.embeds) return;
@@ -148,8 +137,8 @@ module.exports = {
         if (!data[json.playname][num]) return interaction.followUp({
           embeds: [{
             color: 0x00ff22,
-            title: `お知らせ`,
-            description: "全音楽の再生が終わりました。"
+            title: (interaction.locale == "ja") ? `お知らせ` : "news",
+            description: (interaction.locale == "ja") ? "全音楽の再生が終わりました。" : "All music has finished playing."
           }]
         });
         let guildQueue = player.getQueue(interaction.guildId);
@@ -160,7 +149,7 @@ module.exports = {
         const select_data = {
           "components": [{
             "custom_id": "answer_select",
-            "placeholder": "正解だと思う選択肢を選択してください。",
+            "placeholder": (interaction.locale == "ja") ? "正解だと思う選択肢を選択してください。" : "Select the option that you think is the correct answer.",
             "options": data[json.playname][num].q.map(item => {
               return {
                 "label": `${bugi++}:${item.slice(0, 10)}`,
@@ -176,7 +165,7 @@ module.exports = {
           components: [
             {
               custom_id: `re${data[json.playname][num].url},${data[json.playname][num].id},${json.id}`,
-              label: "不適切なプレイリストを報告する。",
+              label: (interaction.locale == "ja") ? "不適切なプレイリストを報告する。" : "Report an inappropriate playlist.",
               style: 4,
               type: 2,
             }
@@ -187,7 +176,7 @@ module.exports = {
           reply: await interaction.channel.send({
             embeds: [{
               color: 0x00ff22,
-              title: "この音楽の名称を選択してください。",
+              title: (interaction.locale == "ja") ? "この音楽の名称を選択してください。" : "Please select the name of this music.",
               description: data[json.playname][num].q.join("\n")
             }],
             components: [select_data, button]
@@ -212,13 +201,13 @@ module.exports = {
         components: [
           {
             custom_id: "stop",
-            label: "やめる",
+            label: (interaction.locale == "ja") ? "やめる" : "stop",
             style: 1,
             type: 2,
           },
           {
             custom_id: "next",
-            label: "次の曲へ",
+            label: (interaction.locale == "ja") ? "次の曲へ" : "next",
             style: 1,
             type: 2,
           }
@@ -238,8 +227,8 @@ module.exports = {
         interaction.channel.send({
           embeds: [{
             color: 0x00ff22,
-            title: "正解!",
-            description: `**${interaction.user.tag}**さんが正解しました。\n現在のポイント:**${rankdata + 1}P**\n操作を続行するためには、**ボタンを押してください**。`
+            title: (interaction.locale == "ja") ? "正解!" : "correct answer!",
+            description: (interaction.locale == "ja") ? `**${interaction.user.tag}**さんが正解しました。\n現在のポイント:**${rankdata + 1}P**\n操作を続行するためには、**ボタンを押してください**。` : `**${interaction.user.tag}**answered correctly.\nCurrent point:**${rankdata + 1}P**\nPress the **button to continue the operation**.`
           }],
           components: [data]
         });
@@ -250,8 +239,8 @@ module.exports = {
         interaction.channel.send({
           embeds: [{
             color: 0xff1100,
-            title: "不正解!",
-            description: `**${interaction.user.tag}**さんが不正解しました。\n現在のポイント:**${rankdata - 1}P**\n操作を続行するためには、**ボタンを押してください**。`
+            title: (interaction.locale == "ja") ? "不正解!" : "Incorrect answer!",
+            description: (interaction.locale == "ja") ? `**${interaction.user.tag}**さんが不正解しました。\n現在のポイント:**${rankdata - 1}P**\n操作を続行するためには、**ボタンを押してください**。` : `**${interaction.user.tag}**Incorrect answer!.\nCurrent point:**${rankdata + 1}P**\nPress the **button to continue the operation**.`
           }],
           components: [data]
         });
@@ -277,8 +266,8 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           color: 0xff1100,
-          title: "エラー",
-          description: "**サーバーの再起動**により、メモリーが**初期化**されました。\n初めから操作の**やり直ししてください。**"
+          title: (interaction.locale == "ja") ? "エラー" : "error",
+          description: (interaction.locale == "ja") ? "**サーバーの再起動**により、メモリーが**初期化**されました。\n初めから操作の**やり直ししてください。**" : "**The server has been **initialized** by restarting the server.\nPlease try the operation **again from the beginning**."
         }]
       });
       await this.sound(i.num + 1);
@@ -303,8 +292,8 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           color: 0xff1100,
-          title: "エラー",
-          description: "**サーバーの再起動**により、メモリーが**初期化**されました。\n初めから操作の**やり直ししてください。**"
+          title: (interaction.locale == "ja") ? "エラー" : "error",
+          description: (interaction.locale == "ja") ? "**サーバーの再起動**により、メモリーが**初期化**されました。\n初めから操作の**やり直ししてください。**" : "**The server has been **initialized** by restarting the server.\nPlease try the operation **again from the beginning**."
         }]
       });
       const guild = player.getQueue(interaction.guildId);
@@ -323,13 +312,13 @@ module.exports = {
       const url = interaction.customId.slice(2);
       const modal = new discordModals.Modal()
         .setCustomId(url)
-        .setTitle('内容を入力してください。')
+        .setTitle((interaction.locale == "ja") ? '内容を入力してください。' : 'Please enter the content.')
         .addComponents(
           new discordModals.TextInputComponent()
             .setCustomId(`input`)
-            .setLabel(`対象プレイリストを運営が審査します。`)
+            .setLabel((interaction.locale == "ja") ? `対象プレイリストを運営が審査します。` : `The management will review the target playlist.`)
             .setStyle('LONG')
-            .setPlaceholder('ここに報告内容を記入してください。')
+            .setPlaceholder((interaction.locale == "ja") ? 'ここに報告内容を記入してください。' : 'Please fill in the report here.')
             .setRequired(true)
         );
       discordModals.showModal(modal, {
@@ -368,8 +357,8 @@ module.exports = {
           color: 0x00ff22,
           ephemeral: true,
           embeds: [{
-            title: "完了",
-            description: "プレイリストが**0個**になったので、**IDを消去**しました。"
+            title: (interaction.locale == "ja") ? "完了" : "completion",
+            description: (interaction.locale == "ja") ? "プレイリストが**0個**になったので、**IDを消去**しました。" : "Since the number of playlists is **0**,**ID has been deleted**."
           }]
         });
       } else {
@@ -378,8 +367,8 @@ module.exports = {
           ephemeral: true,
           embeds: [{
             color: 0x00ff22,
-            title: "完了",
-            description: "消しました。"
+            title: (interaction.locale == "ja") ? "完了" : "completion",
+            description: (interaction.locale == "ja") ? "消しました。" : "I erased."
           }]
         });
       };
@@ -400,8 +389,8 @@ module.exports = {
           ephemeral: true,
           embeds: [{
             color: 0xff1100,
-            title: "警告",
-            description: "プレイリスト内の音楽が0個になるので**/delete プレイリスト削除**コマンドを使用ください。"
+            title: (interaction.locale == "ja") ? "警告" : "warning",
+            description: (interaction.locale == "ja") ? "プレイリスト内の音楽が0個になるので**/delete プレイリスト削除**コマンドを使用ください。" : "Use the **/delete playlist delete** command as there will be 0 music in the playlist."
           }]
         });
       } else {
@@ -409,7 +398,7 @@ module.exports = {
         const select_data = {
           "components": [{
             "custom_id": "music_delete",
-            "placeholder": "対象の音楽を選んでください。",
+            "placeholder": (interaction.locale == "ja") ? "対象の音楽を選んでください。" : "Please select the target music.",
             "options": data.map(item => {
               return {
                 "label": `${i}:${item.answer}`,
@@ -424,7 +413,7 @@ module.exports = {
           ephemeral: true,
           embeds: [{
             color: 0x00ff22,
-            title: "消したい音楽を選択してください。",
+            title: (interaction.locale == "ja") ? "消したい音楽を選択してください。" : "Select the music you want to erase.",
             description: data.map(x => x.answer).join("\n")
           }],
           components: [select_data]
@@ -442,8 +431,8 @@ module.exports = {
         ephemeral: true,
         embeds: [{
           color: 0x00ff22,
-          title: "削除が完了しました。",
-          description: `${id.title}を削除しました。`
+          title: (interaction.locale == "ja") ? "削除が完了しました。" : "The deletion is complete.",
+          description: (interaction.locale == "ja") ? `${id.title}を削除しました。` : `Removed ${id.title}.`
         }]
       });
     };
@@ -462,7 +451,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `create-help`,
-            description: `コマンド:/play\n詳細コマンド:/create 検索ワード 選択肢 答え プレイリスト名\n\n**詳細説明**\n検索ワードはYoutubeで自動検索される際に検索する言葉を入れてください。\n選択肢はコンマ(,)で区切ってください最大で25個、1個あたり80字まで登録できます。\n答えには問題の答えを入れてください。\nプレイリスト名は最大10個まで作成可能で名前をかぶらせれば自動でつかされていきます。\n概要:音楽の問題を作成します。`
+            description: (interaction.locale == "ja") ? `コマンド:/create\n詳細コマンド:/create 検索ワード 選択肢 答え プレイリスト名\n\n**詳細説明**\n検索ワードはYoutubeで自動検索される際に検索する言葉を入れてください。\n選択肢はコンマ(,)で区切ってください最大で25個、1個あたり80字まで登録できます。\n答えには問題の答えを入れてください。\nプレイリスト名は最大10個まで作成可能で名前をかぶらせれば自動でつかされていきます。\n概要:音楽の問題を作成します。` : `Command:/create\nDetailed command:/create Search word Choice Answer Playlist_name\n\n**Detailed explanation**\nThe search word should be the word to be searched when it is automatically searched on Youtube. \nPlease separate the choices with a comma (,). You can register up to 25 characters and 80 characters per item. \nPlease include the answer to the question in the answer. \nYou can create up to 10 playlist names, and if you put a name on it, it will be used automatically. \nSummary: Create a music question.`
           }],
           components: [globalThis.help]
         });
@@ -473,7 +462,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `play-help`,
-            description: `コマンド:/play\n詳細コマンド:/play プレイリストID\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n指定されていない場合またはIDが見つからない場合はランダムで検索されます。\n注**DiscordのIDではありません**\n概要:音楽クイズを開始します。`
+            description: (interaction.locale == "ja") ? `コマンド:/play\n詳細コマンド:/play プレイリストID\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n指定されていない場合またはIDが見つからない場合はランダムで検索されます。\n注**DiscordのIDではありません**\n概要:音楽クイズを開始します。` : `Command:/play\nDetailed command:/play Playlist_ID\n\n**Detailed description**\nUse the unique ID created by **/create** for the playlist ID. \nIf not specified or the ID is not found, it will be searched randomly.\nNote **Not a Discord ID**\nOverview: Start a music quiz. `
           }],
           components: [globalThis.help]
         });
@@ -484,7 +473,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `delete-help`,
-            description: `コマンド:/delete\n詳細コマンド:/delete プレイリストID 音楽削除またはプレイリスト削除を選択\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n注**DiscordのIDではありません**\n音楽削除はプレイリスト内にある音楽を削除します。(注:音楽が1個の場合は使用できません)\nプレイリスト削除はプレイリストを削除します。(注:1この場合はIDごと消されます)\n概要:作成された問題の削除をします。`
+            description: (interaction.locale == "ja") ? `コマンド:/delete\n詳細コマンド:/delete プレイリストID 音楽削除またはプレイリスト削除を選択\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n注**DiscordのIDではありません**\n音楽削除はプレイリスト内にある音楽を削除します。(注:音楽が1個の場合は使用できません)\nプレイリスト削除はプレイリストを削除します。(注:1この場合はIDごと消されます)\n概要:作成された問題の削除をします。` : `Command:/delete\nDetailed command:/delete Playlist_ID {Select to delete music(音楽削除) or delete playlist(プレイリスト削除)} \n\n **Detailed description**\nPlaylist ID was created with **/create** Use your own ID.\nNote**Not a Discord ID**\nDelete Music deletes the music in the playlist. (Note: Not available if there is only one piece of music)\n Delete playlist deletes the playlist.(Note:1 In this case, each ID will be deleted.)\n Summary:Delete the created problem.`
           }],
           components: [globalThis.help]
         });
@@ -495,7 +484,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `myid-help`,
-            description: `コマンド:/myid\n詳細コマンド:/myid\n\n**詳細説明**\n自分のIDを確認できます。\n詳細でプレイリスト一覧の名前を出ます。\n概要:IDの確認をします。`
+            description: (interaction.locale == "ja") ? `コマンド:/myid\n詳細コマンド:/myid\n\n**詳細説明**\n自分のIDを確認できます。\n詳細でプレイリスト一覧の名前を出ます。\n概要:IDの確認をします。` : `Command:/myid\nDetailed command:/myid\n\n**Detailed description**\nYou can check your ID.\n Shows the name of the playlist list in detail.\n Summary:Check the ID.`
           }],
           components: [globalThis.help]
         });
@@ -506,18 +495,29 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `point-help`,
-            description: `コマンド:/point\n詳細コマンド:/point ポイント確認またはポイント削除\n\n**詳細説明**\nポイント確認はギルド内のポイントを順位をつけて出します。\nポイント削除はギルド内のすべてのユーザーのポイントを消します。(注:1.一度消した場合は取り消しができません。2.管理者権限がないとできません。)\n概要:ポイントの管理をします。`
+            description: (interaction.locale == "ja") ? `コマンド:/point\n詳細コマンド:/point ポイント確認またはポイント削除\n\n**詳細説明**\nポイント確認はギルド内のポイントを順位をつけて出します。\nポイント削除はギルド内のすべてのユーザーのポイントを消します。(注:1.一度消した場合は取り消しができません。2.管理者権限がないとできません。)\n概要:ポイントの管理をします。` : `Command:/point\nDetailed command:/point {Confirm point(ポイント確認) or delete point(ポイント削除)}\n\n**Detailed explanation**\nPoint confirmation ranks points in the guild.\nDelete points erases points for all users in the guild.(Note:1.Once deleted, it cannot be canceled. 2.It cannot be done without administrator privileges.)\nOverview: Manage points.`
           }],
           components: [globalThis.help]
         });
       };
       if (id == "other") {
+        const feedback_button = {
+          components: [
+            {
+              custom_id: `feedback_button`,
+              label: (interaction.locale == "ja") ? "運営にフィードバックをする。" : "Give feedback to the operation.",
+              style: 1,
+              type: 2,
+            }
+          ],
+          type: 1
+        };
         interaction.editReply({
           ephemeral: true,
           embeds: [{
             color: 0x00ff22,
             title: `other`,
-            description: `**使用パッケージ**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**ホスティングサーバー**:Heroku(フリープラン)\n**使用データベース**:Mongo(フリープラン)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)`
+            description: (interaction.locale == "ja") ? `**使用パッケージ**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**ホスティングサーバー**:Heroku(フリープラン)\n**使用データベース**:Mongo(フリープラン)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)` : `**Package used**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**Hosting server**:Heroku (free plan)\n**Database used**:Mongo (free plan)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)`
           }],
           components: [globalThis.help, feedback_button]
         });
@@ -528,7 +528,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `help`,
-            description: `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。`
+            description: (interaction.locale == "ja") ? `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。` : `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[Support server](https://discord.gg/XqymQk4D24)\nProgram production:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT administrator:[YURIRI#2724](https://discord.com/users/574104712656191488)\nFor bugs or typographical errors, please contact BURI#9515.\nBOT questions and support server related to YURIRI#2724.`
           }],
           components: [globalThis.help]
         });
@@ -547,6 +547,6 @@ module.exports = {
         interaction: interaction
       });
     };
-    
+
   }
 }
