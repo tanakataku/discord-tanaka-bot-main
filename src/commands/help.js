@@ -28,12 +28,12 @@ module.exports = {
                     "value": `point`
                   },
                   {
-                    "label": `other`,
-                    "value": `other`
-                  },
-                  {
                     "label": `help`,
                     "value": `help`
+                  },
+                  {
+                    "label": `other`,
+                    "value": `other`
                   },
                 ],
               "type": 3
@@ -45,7 +45,7 @@ module.exports = {
             embeds: [{
                 color: 0x00ff22,
                 title: `help`,
-                description: `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。`
+                description: `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/help**\n**other**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。`
             }],
             components:[globalThis.help]
         });
