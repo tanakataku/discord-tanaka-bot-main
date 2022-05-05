@@ -23,8 +23,24 @@ const feedback = new discordModals.Modal()
       .setPlaceholder('ここにフィードバックを記入してください。')
       .setRequired(true)
   );
+/*
+
+player event
+
+*/
+
 module.exports = {
   async run(interaction) {
+    player.on('queueEnd', () => {
+      const i = this[interaction.guildId];
+      if (i) i.reply.delete().catch(() => { });
+    })
+      .on('error', (error, queue) => {
+        console.log(`Error: ${error} in ${queue.guild.name}`);
+      })
+      .on('clientDisconnect', queue => {
+        queue.stop()
+      });
     /*
 
 プレイリスト選択
@@ -93,7 +109,6 @@ module.exports = {
     
     
     */
-    let guildQueue = player.getQueue(interaction.guildId);
     if (interaction.customId == "start_select") {
       await interaction.deferUpdate();
       let bugi = 1;
@@ -142,8 +157,10 @@ module.exports = {
             description: (interaction.locale == "ja") ? "全音楽の再生が終わりました。" : "All music has finished playing."
           }]
         });
+
         await queue.play(`https://youtube.com/watch?v=${data[json.playname][num].url}`)
           .catch(_ => {
+            let guildQueue = player.getQueue(interaction.guildId);
             if (!guildQueue) queue.stop();
           });
         const select_data = {
@@ -187,10 +204,7 @@ module.exports = {
       await this.sound(0);
     };
 
-    player.on('queueEnd', () => {
-      const i = this[interaction.guildId];
-      if (i) i.reply.delete().catch(() => { });
-    });
+
     /*
    
     答え選択
@@ -248,11 +262,11 @@ module.exports = {
     };
 
     /*
-    
-    
+     
+     
     next
-    
-    
+     
+     
     */
 
 
@@ -276,9 +290,9 @@ module.exports = {
     }
 
     /*
-
+    
     stop
-
+    
     */
 
 
@@ -303,9 +317,9 @@ module.exports = {
     };
 
     /*
-
+    
     report
-
+    
     */
 
     if (interaction.customId.startsWith("re")) {
@@ -328,24 +342,24 @@ module.exports = {
     };
 
     /*
-
+    
     ban
-
+    
     */
     if (interaction.customId.startsWith("ban")) {
       const id = interaction.customId.slice(3).split(",");
       if (id[1]) await globalThis.dbs.delete(id[1]);
       const bans = JSON.parse(JSON.stringify(await globalThis.bans.get("ban") || []));
       bans.push(id[0]);
-      if(id[0]!=="no")await globalThis.bans.set("ban", bans);
+      if (id[0] !== "no") await globalThis.bans.set("ban", bans);
       globalThis.ban = bans;
       interaction.reply("完了しました。");
     };
 
     /*
-
+    
     playlist_delete
-
+    
     */
     if (interaction.customId == "delete") {
       const id = JSON.parse(interaction.values[0]);
@@ -375,9 +389,9 @@ module.exports = {
     };
 
     /*
-
+    
     music_delete
-
+    
     */
     if (interaction.customId == "musicdelete") {
       const id = JSON.parse(interaction.values[0]);
@@ -438,9 +452,9 @@ module.exports = {
     };
 
     /*
-
+    
     help
-
+    
     */
     if (interaction.customId == "help_select") {
       const id = interaction.values[0];
@@ -536,9 +550,9 @@ module.exports = {
     };
 
     /*
-
+    
     feedback_button
-
+    
     */
 
     if (interaction.customId == "feedback_button") {
