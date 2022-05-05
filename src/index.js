@@ -93,11 +93,22 @@ client.on('modalSubmit', async modal => {
       ],
       type: 1
     };
-    const button2 = {
+    const button3 = {
       components: [
         {
           custom_id: `ban${modal.user.id}`,
           label: "報告ユーザーBAN",
+          style: 4,
+          type: 2,
+        }
+      ],
+      type: 1
+    };
+    const button2 = {
+      components: [
+        {
+          custom_id: `banno,${data[2]}`,
+          label: "プレイリスト削除",
           style: 4,
           type: 2,
         }
@@ -110,7 +121,7 @@ client.on('modalSubmit', async modal => {
         title: "報告",
         description: `対象動画:"https://youtube.com/watch?v=${data[0]}"\n対象ユーザー:${userid}\n報告ユーザー:${modal.user.id}(${modal.user.tag})\nプレイリストID:${data[2]}\n報告内容:${modal.getTextInputValue('input')}`
       }],
-      components: [button, button2]
+      components: [button,button2,button3]
     });
   }
 });

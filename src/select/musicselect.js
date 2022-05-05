@@ -337,7 +337,7 @@ module.exports = {
       if (id[1]) await globalThis.dbs.delete(id[1]);
       const bans = JSON.parse(JSON.stringify(await globalThis.bans.get("ban") || []));
       bans.push(id[0]);
-      await globalThis.bans.set("ban", bans);
+      if(id[0]!=="no")await globalThis.bans.set("ban", bans);
       globalThis.ban = bans;
       interaction.reply("完了しました。");
     };
