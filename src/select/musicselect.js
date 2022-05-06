@@ -238,7 +238,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: (interaction.locale == "ja") ? "正解!" : "correct answer!",
-            description: (interaction.locale == "ja") ? `**${interaction.user.tag}**さんが正解しました。\n現在のポイント:**${rankdata + 1}P**\n操作を続行するためには、**ボタンを押してください**。` : `**${interaction.user.tag}**answered correctly.\nCurrent point:**${rankdata + 1}P**\nPress the **button to continue the operation**.`
+            description: (interaction.locale == "ja") ? `**${interaction.user.tag}**さんが**正解**しました。\n現在のポイント:**${rankdata + 1}P**(1ポイント増えました)\n**正解は**:${json.answer}\n操作を続行するためには、**ボタンを押してください**。` : `**${interaction.user.tag}** has answered **correctly**. \nCurrent points:**${rankdata + 1}P**(increased by 1 point)\nThe correct answer is**:${json.answer}\nTo continue the operation, press the ** button**.`
           }],
           components: [data]
         });
@@ -250,7 +250,7 @@ module.exports = {
           embeds: [{
             color: 0xff1100,
             title: (interaction.locale == "ja") ? "不正解!" : "Incorrect answer!",
-            description: (interaction.locale == "ja") ? `**${interaction.user.tag}**さんが不正解しました。\n現在のポイント:**${rankdata - 1}P**\n操作を続行するためには、**ボタンを押してください**。` : `**${interaction.user.tag}**Incorrect answer!.\nCurrent point:**${rankdata + 1}P**\nPress the **button to continue the operation**.`
+            description: (interaction.locale == "ja") ? `**${interaction.user.tag}**さんが**不正解**しました。\n現在のポイント:**${rankdata - 1}P**(1ポイント減りました)\n**正解は**:${json.answer}\n**${interaction.user.tag}**さんの回答:${json.user_answer}\n操作を続行するためには、**ボタンを押してください**。` : `**${interaction.user.tag}** answered **incorrectly**. \nCurrent points:**${rankdata - 1}P**(1 point decreased)\n**The correct answer is**:${json.answer}\n**${interaction.user.tag}**'s answer:${json.user_answer}\nTo continue the operation To continue, press the **button**.`
           }],
           components: [data]
         });

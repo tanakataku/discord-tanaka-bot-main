@@ -73,7 +73,7 @@ module.exports = {
                         } catch (e) {
 
                         }
-                    }, 180 * 1000);
+                    }, 120 * 1000);
                     globalThis[rand] = { u: data.videoId, a: q, p: sc.getString("list") }
                     return {
                         "label": `${n++}:${data.title.replace(/\s+/g, "").slice(0, 5)}`,
