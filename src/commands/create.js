@@ -76,7 +76,7 @@ module.exports = {
                     }, 180 * 1000);
                     globalThis[rand] = { u: data.videoId, a: q, p: sc.getString("list") }
                     return {
-                        "label": `${i++}:${data.title.replace(/\s+/g, "").slice(0, 5)}`,
+                        "label": `${n++}:${data.title.replace(/\s+/g, "").slice(0, 5)}`,
                         "value": rand
                     };
                 }),
@@ -89,7 +89,7 @@ module.exports = {
             embeds: [{
                 color: 0x00ff22,
                 title: (interaction.locale == "ja") ? `**${title.slice(0, 15)}**の検索結果` : `Search results for **${title.slice(0, 15)}**`,
-                description: (interaction.locale == "ja") ? videos.map(data => `**${i}**個目\n**タイトル**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**再生時間**:${data.timestamp}秒`).join("\n\n") : videos.map(data => `**${i++}**Item\n**Title**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**Playback time**:${data.timestamp}s`).join("\n\n")
+                description: (interaction.locale == "ja") ? videos.map(data => `**${i++}**個目\n**タイトル**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**再生時間**:${data.timestamp}秒`).join("\n\n") : videos.map(data => `**${i++}**Item\n**Title**:[${data.title.slice(0, 30).replace(/\]/g, "").replace(/\[/g, "")}](${data.url})\n**Playback time**:${data.timestamp}s`).join("\n\n")
             }],
             components: [select_data]
         });
