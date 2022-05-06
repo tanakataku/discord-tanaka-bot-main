@@ -8,7 +8,7 @@ globalThis.dbs = new mongo.Database(process.env.db_label);
 globalThis.ranks = new mongo.Database(process.env.rank_db_label);
 globalThis.bans = new mongo.Database(process.env.ban_db_label);
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
 globalThis.client = client;
 const musicselect = require("./select/musicselect");
 const commands = {};
