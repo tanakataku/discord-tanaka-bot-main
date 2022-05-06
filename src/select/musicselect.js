@@ -2,7 +2,7 @@ globalThis.moment = require('moment');
 const { Player } = require("discord-music-player");
 const discordModals = require('discord-modals');
 const player = new Player(globalThis.client, {
-  leaveOnEmpty: false,
+  leaveOnEmpty: true,
 });
 discordModals(globalThis.client);
 const shuffle = ([...array]) => {
@@ -37,9 +37,6 @@ module.exports = {
     })
       .on('error', (error, queue) => {
         console.log(`Error: ${error} in ${queue.guild.name}`);
-      })
-      .on('clientDisconnect', queue => {
-        queue.stop()
       });
     /*
 
@@ -159,9 +156,8 @@ module.exports = {
         });
 
         await queue.play(`https://youtube.com/watch?v=${data[json.playname][num].url}`)
-          .catch(_ => {
-            let guildQueue = player.getQueue(interaction.guildId);
-            if (!guildQueue) queue.stop();
+          .catch(_=> {
+            queue.stop();
           });
         const select_data = {
           "components": [{
@@ -487,7 +483,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `delete-help`,
-            description: (interaction.locale == "ja") ? `コマンド:/delete\n詳細コマンド:/delete プレイリストID 音楽削除またはプレイリスト削除を選択\n\n**詳細説明**\nプレイリストIDには**/create**で作成された独自のIDを使用してください。\n注**DiscordのIDではありません**\n音楽削除はプレイリスト内にある音楽を削除します。(注:音楽が1個の場合は使用できません)\nプレイリスト削除はプレイリストを削除します。(注:1この場合はIDごと消されます)\n概要:作成された問題の削除をします。` : `Command:/delete\nDetailed command:/delete Playlist_ID {Select to delete music(音楽削除) or delete playlist(プレイリスト削除)} \n\n **Detailed description**\nPlaylist ID was created with **/create** Use your own ID.\nNote**Not a Discord ID**\nDelete Music deletes the music in the playlist. (Note: Not available if there is only one piece of music)\n Delete playlist deletes the playlist.(Note:1 In this case, each ID will be deleted.)\n Summary:Delete the created problem.`
+            description: (interaction.locale == "ja") ? `コマンド:/delete\n詳細コマンド:/delete {音楽削除またはプレイリスト削除を選択}\n\n**詳細説明**\n音楽削除はプレイリスト内にある音楽を削除します。(注:音楽が1個の場合は使用できません)\nプレイリスト削除はプレイリストを削除します。(注:1この場合はIDごと消されます)\n概要:作成された問題の削除をします。` : `Command:/delete\nDetailed command:/delete {Select to delete music(音楽削除) or delete playlist(プレイリスト削除)} \n\n **Detailed description**\nDelete Music deletes the music in the playlist. (Note: Not available if there is only one piece of music)\n Delete playlist deletes the playlist.(Note:1 In this case, each ID will be deleted.)\n Summary:Delete the created problem.`
           }],
           components: [globalThis.help]
         });
@@ -509,7 +505,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `point-help`,
-            description: (interaction.locale == "ja") ? `コマンド:/point\n詳細コマンド:/point ポイント確認またはポイント削除\n\n**詳細説明**\nポイント確認はギルド内のポイントを順位をつけて出します。\nポイント削除はギルド内のすべてのユーザーのポイントを消します。(注:1.一度消した場合は取り消しができません。2.管理者権限がないとできません。)\n概要:ポイントの管理をします。` : `Command:/point\nDetailed command:/point {Confirm point(ポイント確認) or delete point(ポイント削除)}\n\n**Detailed explanation**\nPoint confirmation ranks points in the guild.\nDelete points erases points for all users in the guild.(Note:1.Once deleted, it cannot be canceled. 2.It cannot be done without administrator privileges.)\nOverview: Manage points.`
+            description: (interaction.locale == "ja") ? `コマンド:/point\n詳細コマンド:/point {ポイント確認またはポイント削除}\n\n**詳細説明**\nポイント確認はギルド内のポイントを順位をつけて出します。\nポイント削除はギルド内のすべてのユーザーのポイントを消します。(注:1.一度消した場合は取り消しができません。2.管理者権限がないとできません。)\n概要:ポイントの管理をします。` : `Command:/point\nDetailed command:/point {Confirm point(ポイント確認) or delete point(ポイント削除)}\n\n**Detailed explanation**\nPoint confirmation ranks points in the guild.\nDelete points erases points for all users in the guild.(Note:1.Once deleted, it cannot be canceled. 2.It cannot be done without administrator privileges.)\nOverview: Manage points.`
           }],
           components: [globalThis.help]
         });
@@ -531,7 +527,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `other`,
-            description: (interaction.locale == "ja") ? `**使用パッケージ**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**ホスティングサーバー**:Heroku(フリープラン)\n**使用データベース**:Mongo(フリープラン)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)` : `**Package used**\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**Hosting server**:Heroku (free plan)\n**Database used**:Mongo (free plan)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)`
+            description: (interaction.locale == "ja") ? `**使用パッケージ**\nopusscript\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**ホスティングサーバー**:Heroku(フリープラン)\n**使用データベース**:Mongo(フリープラン)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)` : `**Package used**\nopusscript\n@discordjs/opus\naurora-mongo\ndiscord-modals\ndiscord-music-player\ndiscord.js\ndotenv\nmoment\nyt-search\n\n**Hosting server**:Heroku (free plan)\n**Database used**:Mongo (free plan)\n[github](https://github.com/tanakataku/discord-tanaka-bot-main)`
           }],
           components: [globalThis.help, feedback_button]
         });
@@ -542,7 +538,7 @@ module.exports = {
           embeds: [{
             color: 0x00ff22,
             title: `help`,
-            description: (interaction.locale == "ja") ? `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。` : `**/play**\n**/create**\n**/delete**\n**/myid**\n**/point**\n**/other**\n**/help**\n\nping:${globalThis.client.ws.ping}ms\n[Support server](https://discord.gg/XqymQk4D24)\nProgram production:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT administrator:[YURIRI#2724](https://discord.com/users/574104712656191488)\nFor bugs or typographical errors, please contact BURI#9515.\nBOT questions and support server related to YURIRI#2724.`
+            description: (interaction.locale == "ja") ? `**/play**:概要音楽クイズを開始します。\n**/create**:概要音楽クイズを作成します。\n**/delete**:概要音楽クイズを削除します。\n**/myid**:概要自分のIDの確認とプレイリスト内の音楽を表示します。\n**/point**:概要ポイントの操作を行います。\n**/help**:概要ヘルプを表示します。(この画面です)\nother:概要その他要項を表示します。\n\nping:${globalThis.client.ws.ping}ms\n[サポートサーバー](https://discord.gg/XqymQk4D24)\nプログラム制作:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT管理者:[YURIRI#2724](https://discord.com/users/574104712656191488)\nバグまたは誤字などはBURI#9515まで。\nBOTの質問やサポートサーバー関係はYURIRI#2724まで。` : `**/play**:start overview music quiz \n**/create**: Create a summary music quiz. \n**/delete**: Delete a summary music quiz. \n**/myid**:abstractViews your ID and music in the playlist. \n**/point**:OverviewPoints operation. \n**/help**:OverviewDisplay help. (This screen)\nother:Display overview other information.\n\nping:${globalThis.client.ws.ping}ms\n[Support server](https://discord.gg/XqymQk4D24)\nProgram production:[BURI#9515](https://discord.com/users/672422208089489413)\nBOT administrator:[YURIRI#2724](https://discord.com/users/574104712656191488)\nFor bugs or typographical errors, please contact BURI#9515.\nBOT questions and support server related to YURIRI#2724.`
           }],
           components: [globalThis.help]
         });
@@ -554,13 +550,11 @@ module.exports = {
     feedback_button
     
     */
-
     if (interaction.customId == "feedback_button") {
       discordModals.showModal(feedback, {
         client: globalThis.client,
         interaction: interaction
       });
     };
-
   }
 }

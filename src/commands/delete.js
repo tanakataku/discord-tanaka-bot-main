@@ -4,11 +4,6 @@ module.exports = {
         description: "指定のものを削除します。",
         options: [{
             type: "STRING",
-            name: "playid",
-            description: "プレイリストのIDを入力してください。",
-            required: true
-        }, {
-            type: "STRING",
             name: "delete_type",
             description: "オプションを選択してください",
             required: true,
@@ -19,8 +14,8 @@ module.exports = {
         }]
     },
     async run(interaction) {
+        const id = Number(globalThis.moment(interaction.user.createdAt).format("MMDDHHmmss").slice(0, 9)).toString(36);
         if (interaction.options.getString('delete_type') === 'play_listdelete') {
-            const id = interaction.options.getString('playid')?.toLowerCase();
             const datas = await globalThis.dbs.get(id)
             const data = JSON.parse(JSON.stringify(datas || []));
             if (!datas) return interaction.reply({
@@ -29,14 +24,6 @@ module.exports = {
                     color: 0xff1100,
                     title: (interaction.locale == "ja") ? "エラー" : "error",
                     description: (interaction.locale == "ja") ? "プレイリストIDが見つかりませんでした。" : "Playlist ID not found."
-                }]
-            });
-            if (data[Object.keys(data)[0]][0].id !== interaction.user.id) return interaction.reply({
-                ephemeral: true,
-                embeds: [{
-                    color: 0xff1100,
-                    title: (interaction.locale == "ja") ? "エラー" : "error",
-                    description: (interaction.locale == "ja") ? "ユーザーIDが一致しません。" : "User ID does not match."
                 }]
             });
             let i = 0;
@@ -65,7 +52,6 @@ module.exports = {
             });
         }
         if (interaction.options.getString('delete_type') === 'musicdelete') {
-            const id = interaction.options.getString('playid')?.toLowerCase();
             const datas = await globalThis.dbs.get(id);
             const data = JSON.parse(JSON.stringify(datas || []));
             if (!datas) return interaction.reply({

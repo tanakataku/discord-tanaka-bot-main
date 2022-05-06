@@ -27,6 +27,7 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "moment": "^2.29.3",
+    "opusscript": "^0.0.8",
     "yt-search": "^2.10.3"
   }
 }
