@@ -44,6 +44,7 @@ module.exports = {
 
     */
     if (interaction.customId == "music_select") {
+      console.log("tests")
       const id = Number(globalThis.moment(interaction.user.createdAt).format("MMDDHHmmss").slice(0, 9)).toString(36);
       const json = globalThis[interaction.values[0]];
       if (!json) return interaction.reply({
@@ -53,11 +54,13 @@ module.exports = {
           title: (interaction.locale == "ja") ? "エラー" : "error",
           description: (interaction.locale == "ja") ? "操作が一定時間なかったため、一時データが消されました。\nもう一度やり直してください。" : "The temporary data was erased because there was no operation for a certain period of time. \n Please try again."
         }]
-      })
+      });
+      console.log("test1")
       try {
-        delete globalThis[interaction.values[0]]
+        console.log("テスト")
+        delete json
       } catch (e) {
-
+        console.log(e)
       }
       const q = shuffle(json.a);
       const db_data = await globalThis.dbs.get(id);
@@ -156,7 +159,7 @@ module.exports = {
         });
 
         await queue.play(`https://youtube.com/watch?v=${data[json.playname][num].url}`)
-          .catch(_=> {
+          .catch(_ => {
             queue.stop();
           });
         const select_data = {

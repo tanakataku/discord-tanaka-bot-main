@@ -26,6 +26,7 @@ client.on("ready", async () => {
   console.log(`完了!`)
 });
 client.on("interactionCreate", interaction => {
+  console.log(interaction)
   if (!interaction.guildId) return interaction.reply((interaction.locale == "ja") ? "helpは/helpと**サーバーで**打ってください" : "Type help in /help and **on the server**");
   if (globalThis.ban?.includes(interaction.user.id)) return interaction.reply({
     ephemeral: true,
